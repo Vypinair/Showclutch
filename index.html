@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ShowClutch — India's Die-Cast Collector Marketplace</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   /* ── CARBON FIBRE PALETTE ── */
@@ -39,18 +39,20 @@
   --amber: #E8A030;
   --green: #3DAD68;
 
-  /* ── FONT PAIRING: Archivo Narrow (display) + Inter (everything else) ──
-     --font-display (Archivo Narrow): large display headings & brand names
+  /* ── FONT PAIRING: MS Gothic (display) + Inter (everything else) ──
+     --font-display (MS Gothic): large display headings & brand names.
+     NOTE: MS Gothic is a Windows-only system font (not web-embeddable);
+     falls back to monospace on other platforms. Replace for production.
      --font-body / --font-cond (Inter): body, buttons, nav, labels, badges */
-  --font-display: 'Archivo Narrow', sans-serif;
+  --font-display: 'MS Gothic', 'MS PGothic', 'Osaka-Mono', monospace;
   --font-cond: 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Archivo Narrow — used at its Regular weight for display; hero gets a touch more. */
-.hero-title { font-weight: 600; letter-spacing: 1px; }
+/* MS Gothic is a wide, even-width face — no extra letter-spacing needed on display. */
+.hero-title { font-weight: 700; letter-spacing: 0; }
 
 /* ── CARBON FIBRE TEXTURE — PROMINENT ── */
 /*
