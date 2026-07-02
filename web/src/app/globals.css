@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0d0d0f;
+  --color-ink-2: #121214;
+  --color-ink-3: #1a1a1d;
+  --color-surface: #1e1e22;
+  --color-fire: #e85500;
+  --color-fire-2: #cc4a00;
+  --color-chrome: #c2cad6;
+  --color-ash: #e4e8ef;
+  --color-ash-2: #8e98ac;
+  --color-ash-3: #50596e;
+  --color-line: rgba(255, 255, 255, 0.08);
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: "MS Gothic", "MS PGothic", "Osaka-Mono", monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #0d0d0f;
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0 5px, rgba(255, 255, 255, 0.06) 5px 6px, transparent 6px 7px),
+    repeating-linear-gradient(45deg, transparent 0 6px, rgba(0, 0, 0, 0.4) 6px 7px, transparent 7px 14px),
+    repeating-linear-gradient(-45deg, transparent 0 5px, rgba(255, 255, 255, 0.05) 5px 6px, transparent 6px 7px),
+    repeating-linear-gradient(-45deg, transparent 0 6px, rgba(0, 0, 0, 0.35) 6px 7px, transparent 7px 14px);
+  background-size: 14px 14px;
+  color: #e4e8ef;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}

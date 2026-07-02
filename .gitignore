@@ -8,3 +8,7 @@ Git/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Dev-only waitlist capture (real signups go to Supabase in production)
+waitlist-dev.jsonl
+web/waitlist-dev.jsonl
