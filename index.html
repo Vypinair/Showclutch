@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShowClutch — India's Die-Cast Collector Marketplace</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
+:root {
+  /* ── CARBON FIBRE PALETTE ── */
+  --bg: #0D0D0F;
+  --bg2: #121214;
+  --bg3: #1A1A1D;
+  --surface: #1E1E22;
+  --surface2: #252528;
+
+  /* ── BORDERS ── */
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+
+  /* ── ORANGE — used sparingly as true accent only ── */
+  --fire: #E85500;        /* slightly deeper/less neon than before */
+  --fire2: #CC4A00;       /* hover state — darker, not brighter */
+  --fire-subtle: rgba(232,85,0,0.08);
+  --fire-border: rgba(232,85,0,0.22);
+
+  /* ── NEUTRALS ── */
+  --chrome: #C2CAD6;
+  --chrome2: #7E8A9C;
+  --chrome3: #404554;
+  --text: #E4E8EF;
+  --text2: #8E98AC;
+  --text3: #50596E;
+
+  /* ── ACCENT COLOURS — unchanged ── */
+  --teal: #0FB8A0;
+  --red: #D93B3B;
+  --amber: #E8A030;
+  --green: #3DAD68;
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-cond: 'Barlow Condensed', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── CARBON FIBRE TEXTURE — PROMINENT ── */
+/*
+  Real carbon fibre weave: each "cell" is a 2×2 bundle of fibres.
+  Two diagonal passes (45° and -45°) cross to create the classic diamond weave.
+  Each fibre strand has a bright highlight edge + dark shadow edge = depth.
+  Cell size 14px = clearly visible at normal viewing distance.
+*/
+body {
+  background-color: var(--bg);
+  background-image:
+    /* 45° strand — bright highlight edge */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255,255,255,0.07) 5px,
+      rgba(255,255,255,0.07) 6px,
+      transparent 6px,
+      transparent 7px
+    ),
+    /* 45° strand — shadow edge */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 6px,
+      rgba(0,0,0,0.45) 6px,
+      rgba(0,0,0,0.45) 7px,
+      transparent 7px,
+      transparent 14px
+    ),
+    /* -45° strand — bright highlight edge */
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255,255,255,0.055) 5px,
+      rgba(255,255,255,0.055) 6px,
+      transparent 6px,
+      transparent 7px
+    ),
+    /* -45° strand — shadow edge */
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      transparent 6px,
+      rgba(0,0,0,0.4) 6px,
+      rgba(0,0,0,0.4) 7px,
+      transparent 7px,
+      transparent 14px
+    );
+  background-size: 14px 14px;
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* Carbon fibre on cards — same weave, slightly lighter base so cards lift off background */
+.auction-card,
+.exchange-card,
+.showoff-card,
+.forum-post,
+.bid-box,
+.community-sidebar-card,
+.dash-stat,
+.activity-list,
+.modal {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255,255,255,0.09) 5px,
+      rgba(255,255,255,0.09) 6px,
+      transparent 6px,
+      transparent 7px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 6px,
+      rgba(0,0,0,0.38) 6px,
+      rgba(0,0,0,0.38) 7px,
+      transparent 7px,
+      transparent 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255,255,255,0.07) 5px,
+      rgba(255,255,255,0.07) 6px,
+      transparent 6px,
+      transparent 7px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      transparent 6px,
+      rgba(0,0,0,0.32) 6px,
+      rgba(0,0,0,0.32) 7px,
+      transparent 7px,
+      transparent 14px
+    );
+  background-size: 14px 14px;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--chrome3); border-radius: 2px; }
+
+/* ── PAGE SYSTEM ── */
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,13,15,0.94);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+/* LOGO: SHOW in white chrome, CLUTCH in orange */
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 2px;
+  color: var(--chrome);
+  display: flex; align-items: center; gap: 0px;
+  cursor: pointer;
+}
+.nav-logo .clutch { color: var(--fire); }
+.nav-logo .dot { width: 6px; height: 6px; background: var(--fire); border-radius: 50%; animation: pulse 2.5s infinite; margin-left: 6px; margin-bottom: 2px; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(0.8)} }
+
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  padding: 6px 14px; font-family: var(--font-cond); font-size: 15px; font-weight: 600;
+  letter-spacing: 0.5px; color: var(--text3); border-radius: 6px;
+  cursor: pointer; transition: all .2s; position: relative;
+}
+.nav-link:hover { color: var(--chrome); background: rgba(255,255,255,0.04); }
+/* Active nav = white, not orange. Orange underline only */
+.nav-link.active { color: var(--text); }
+.nav-link.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 14px; right: 14px;
+  height: 2px; background: var(--fire); border-radius: 1px; opacity: 0.7;
+}
+
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.btn-nav-outline {
+  padding: 6px 16px; border: 1px solid var(--border2); border-radius: 6px;
+  font-family: var(--font-cond); font-size: 14px; font-weight: 600; color: var(--text2);
+  cursor: pointer; transition: all .2s;
+}
+.btn-nav-outline:hover { border-color: var(--chrome3); color: var(--text); }
+/* Start Selling = subtle white button, not full orange */
+.btn-nav-fire {
+  padding: 6px 18px;
+  background: rgba(232,85,0,0.12);
+  border: 1px solid var(--fire-border);
+  border-radius: 6px;
+  font-family: var(--font-cond); font-size: 14px; font-weight: 700;
+  color: var(--fire);
+  cursor: pointer; transition: all .2s; letter-spacing: 0.5px;
+}
+.btn-nav-fire:hover { background: var(--fire); color: #fff; }
+
+/* ── HERO ── */
+.hero {
+  padding-top: 60px; min-height: 100vh; position: relative;
+  display: flex; align-items: center;
+  background: transparent;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0; opacity: 0.025;
+  background-image: linear-gradient(var(--chrome) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--chrome) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+/* Very subtle, barely-there orange glow — just warmth, not a spotlight */
+.hero-glow {
+  position: absolute; width: 700px; height: 500px;
+  background: radial-gradient(ellipse, rgba(232,85,0,0.05) 0%, transparent 65%);
+  top: 40%; left: 40%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border2);
+  border-radius: 20px; padding: 5px 14px;
+  font-family: var(--font-cond); font-size: 13px; font-weight: 600;
+  color: var(--chrome2); letter-spacing: 1px; margin-bottom: 24px;
+}
+/* Small orange dot only, not the full badge */
+.hero-badge::before { content: '●'; font-size: 8px; color: var(--fire); margin-right: 2px; }
+.hero-title {
+  font-family: var(--font-display); font-size: clamp(64px, 10vw, 120px);
+  line-height: 0.92; letter-spacing: 2px; color: var(--text); margin-bottom: 8px;
+}
+/* Only ONE word gets the orange — everything else is white */
+.hero-title .fire-word { color: var(--fire); }
+.hero-subtitle {
+  font-family: var(--font-cond); font-size: 22px; font-weight: 400;
+  color: var(--text3); margin-bottom: 32px; letter-spacing: 0.5px;
+}
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+/* Primary CTA: solid orange only on the ONE main action */
+.btn-fire {
+  padding: 14px 32px; background: var(--fire); border: 1px solid var(--fire); border-radius: 8px;
+  font-family: var(--font-cond); font-size: 18px; font-weight: 700; color: #fff;
+  cursor: pointer; letter-spacing: 1px; transition: all .25s;
+}
+.btn-fire:hover { background: var(--fire2); border-color: var(--fire2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,85,0,0.25); }
+/* Secondary CTA: chrome outline — no orange */
+.btn-outline {
+  padding: 13px 32px; background: transparent; border: 1px solid var(--border2); border-radius: 8px;
+  font-family: var(--font-cond); font-size: 18px; font-weight: 600; color: var(--chrome2);
+  cursor: pointer; letter-spacing: 0.5px; transition: all .25s;
+}
+.btn-outline:hover { border-color: var(--chrome3); color: var(--text); }
+
+/* Hero stats: numbers in white, unit labels in dim text — no orange */
+.hero-stats { display: flex; gap: 40px; }
+.hero-stat .num { font-family: var(--font-display); font-size: 36px; color: var(--text); letter-spacing: 1px; }
+.hero-stat .num span { color: var(--fire); } /* the ₹ or + symbol only */
+.hero-stat .lbl { font-size: 12px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── SECTION COMMON ── */
+.section { max-width: 1200px; margin: 0 auto; padding: 60px 24px; }
+.section-header { margin-bottom: 32px; }
+/* Section label: NOT orange — use dim chrome instead. Orange was everywhere. */
+.section-label {
+  font-family: var(--font-cond); font-size: 12px; font-weight: 700;
+  letter-spacing: 3px; color: var(--chrome3); text-transform: uppercase; margin-bottom: 8px;
+}
+.section-title {
+  font-family: var(--font-display); font-size: 48px; letter-spacing: 1px; color: var(--text);
+  line-height: 1;
+}
+.section-divider {
+  border: none; border-top: 1px solid var(--border); margin: 0 24px;
+}
+
+/* ── BRAND STRIP ── */
+.brand-strip {
+  background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 20px 0; overflow: hidden;
+}
+.brand-scroll {
+  display: flex; gap: 48px; animation: marquee 20s linear infinite;
+  width: max-content;
+}
+.brand-scroll:hover { animation-play-state: paused; }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.brand-item {
+  font-family: var(--font-display); font-size: 20px; letter-spacing: 3px;
+  color: var(--chrome3); white-space: nowrap; cursor: pointer; transition: color .2s;
+  padding: 0 8px;
+}
+.brand-item:hover { color: var(--chrome); }
+
+/* ── AUCTION CARDS ── */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.auction-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; cursor: pointer; transition: all .25s;
+  position: relative;
+}
+.auction-card:hover { border-color: rgba(232,85,0,0.25); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.card-img {
+  height: 180px; background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.card-img-placeholder { font-size: 64px; opacity: 0.12; }
+.card-img-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--bg3) 0%, rgba(232,85,0,0.03) 100%);
+}
+.card-badge {
+  position: absolute; top: 10px; left: 10px;
+  padding: 3px 8px; border-radius: 4px;
+  font-family: var(--font-cond); font-size: 11px; font-weight: 700; letter-spacing: 1px;
+}
+.badge-live { background: rgba(217,59,59,0.85); color: #fff; }
+.badge-ending { background: rgba(232,85,0,0.8); color: #fff; }
+.badge-verified { background: rgba(15,184,160,0.12); border: 1px solid rgba(15,184,160,0.35); color: var(--teal); }
+.badge-showoff { background: rgba(232,160,48,0.12); border: 1px solid rgba(232,160,48,0.35); color: var(--amber); }
+.badge-th { background: rgba(232,85,0,0.1); border: 1px solid var(--fire-border); color: var(--fire); }
+
+.card-watch {
+  position: absolute; top: 10px; right: 10px;
+  width: 30px; height: 30px; background: rgba(0,0,0,0.55); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; cursor: pointer; transition: all .2s; border: 1px solid var(--border);
+}
+.card-watch:hover { background: rgba(232,85,0,0.15); border-color: var(--fire-border); }
+.card-watch.active { color: var(--fire); }
+
+.card-body { padding: 14px; }
+/* Brand label: chrome, not orange. Orange was on EVERY card — too much. */
+.card-brand { font-family: var(--font-cond); font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--chrome3); text-transform: uppercase; }
+.card-name { font-size: 14px; font-weight: 600; color: var(--text); margin: 4px 0; line-height: 1.3; }
+.card-series { font-size: 12px; color: var(--text3); margin-bottom: 12px; }
+.card-footer { display: flex; justify-content: space-between; align-items: flex-end; }
+.card-price-label { font-size: 11px; color: var(--text3); }
+.card-price { font-family: var(--font-display); font-size: 22px; color: var(--text); letter-spacing: 0.5px; }
+.card-price .currency { font-size: 14px; color: var(--chrome2); }
+.card-timer { text-align: right; }
+/* Timer countdown stays orange — it IS an urgency signal, earned orange usage */
+.timer-val { font-family: var(--font-cond); font-size: 16px; font-weight: 700; color: var(--fire); }
+.timer-lbl { font-size: 10px; color: var(--text3); letter-spacing: 1px; }
+.card-bids { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+/* ── AUCTION DETAIL ── */
+.detail-layout { display: grid; grid-template-columns: 1fr 380px; gap: 32px; padding-top: 80px; }
+.img-gallery { background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.img-main { height: 380px; display: flex; align-items: center; justify-content: center; font-size: 120px; opacity: 0.1; background: var(--bg3); }
+.img-thumbs { display: flex; gap: 8px; padding: 12px; background: var(--bg2); }
+.img-thumb {
+  width: 64px; height: 64px; background: var(--bg3); border-radius: 6px; border: 2px solid var(--border);
+  cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center;
+  font-size: 28px; opacity: 0.3;
+}
+.img-thumb.active, .img-thumb:hover { border-color: var(--fire); opacity: 0.8; }
+
+.detail-info { margin-top: 24px; }
+/* Detail brand label — chrome, not orange */
+.detail-brand { font-family: var(--font-cond); font-size: 12px; font-weight: 700; letter-spacing: 3px; color: var(--chrome3); }
+.detail-name { font-family: var(--font-display); font-size: 40px; letter-spacing: 1px; margin: 8px 0 4px; line-height: 1; }
+.detail-series { font-size: 14px; color: var(--text2); margin-bottom: 16px; }
+.detail-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.tag {
+  padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  font-family: var(--font-cond); letter-spacing: 0.5px;
+}
+.tag-fire { background: var(--fire-subtle); color: var(--fire); border: 1px solid var(--fire-border); }
+.tag-teal { background: rgba(15,184,160,0.08); color: var(--teal); border: 1px solid rgba(15,184,160,0.25); }
+.tag-gray { background: var(--surface); color: var(--text2); border: 1px solid var(--border); }
+
+.ai-scan-card {
+  background: var(--bg2); border: 1px solid rgba(15,184,160,0.25); border-radius: 10px;
+  padding: 14px; margin-bottom: 20px;
+}
+.ai-scan-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.ai-scan-icon { width: 28px; height: 28px; background: rgba(15,184,160,0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.ai-scan-title { font-family: var(--font-cond); font-size: 13px; font-weight: 700; color: var(--teal); letter-spacing: 1px; }
+.ai-scan-badge { margin-left: auto; padding: 3px 8px; background: rgba(15,184,160,0.1); border: 1px solid var(--teal); border-radius: 4px; font-size: 11px; font-weight: 700; color: var(--teal); }
+.ai-scan-disclaimer { font-size: 11px; color: var(--text3); line-height: 1.5; }
+
+.bid-history { margin-bottom: 20px; }
+.bid-history-title { font-family: var(--font-cond); font-size: 14px; font-weight: 700; color: var(--text2); letter-spacing: 1px; margin-bottom: 10px; }
+.bid-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.bid-user { font-size: 13px; color: var(--text2); }
+.bid-user strong { color: var(--text); }
+.bid-amount { font-family: var(--font-display); font-size: 18px; color: var(--text); }
+.bid-time { font-size: 11px; color: var(--text3); }
+
+/* ── BID SIDEBAR ── */
+.bid-sidebar { position: sticky; top: 80px; }
+.bid-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.bid-box-header { background: var(--bg3); padding: 16px; border-bottom: 1px solid var(--border); }
+.bid-current-label { font-size: 12px; color: var(--text3); margin-bottom: 4px; }
+.bid-current-amount { font-family: var(--font-display); font-size: 48px; color: var(--text); letter-spacing: 1px; }
+.bid-current-meta { font-size: 12px; color: var(--text3); margin-top: 4px; }
+.bid-timer-bar { background: var(--bg3); padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.bid-timer-live { display: flex; align-items: center; gap: 6px; }
+.live-dot { width: 8px; height: 8px; background: var(--red); border-radius: 50%; animation: pulse 1s infinite; }
+/* Countdown: orange is earned here — time pressure = valid urgency signal */
+.bid-timer-countdown { font-family: var(--font-display); font-size: 28px; color: var(--fire); }
+.bid-body { padding: 16px; }
+.input-group { margin-bottom: 14px; }
+.input-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; font-weight: 500; }
+.bid-input {
+  width: 100%; padding: 12px 14px; background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 8px; color: var(--text); font-size: 16px; font-family: var(--font-body);
+  outline: none; transition: border-color .2s;
+}
+.bid-input:focus { border-color: rgba(232,85,0,0.5); }
+/* Notice: toned down from bright orange box to near-invisible */
+.bid-notice {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px; font-size: 12px; color: var(--text3); margin-bottom: 14px; line-height: 1.5;
+}
+/* BID button: orange stays — it's THE single most important action on the platform */
+.btn-bid { width: 100%; padding: 15px; background: var(--fire); border: none; border-radius: 8px; font-family: var(--font-display); font-size: 22px; letter-spacing: 2px; color: #fff; cursor: pointer; transition: all .25s; }
+.btn-bid:hover { background: var(--fire2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,85,0,0.3); }
+.btn-watchlist { width: 100%; padding: 11px; background: transparent; border: 1px solid var(--border2); border-radius: 8px; font-family: var(--font-cond); font-size: 15px; font-weight: 600; color: var(--text3); cursor: pointer; margin-top: 8px; transition: all .2s; }
+.btn-watchlist:hover { border-color: var(--chrome3); color: var(--chrome2); }
+.escrow-notice { margin-top: 14px; padding: 10px; background: rgba(15,184,160,0.04); border: 1px solid rgba(15,184,160,0.18); border-radius: 8px; font-size: 11px; color: var(--text3); line-height: 1.6; }
+.seller-card { margin-top: 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.seller-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+/* Seller avatar: chrome instead of full orange */
+.seller-avatar { width: 36px; height: 36px; background: var(--chrome3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 16px; color: var(--text); }
+.seller-name { font-weight: 600; font-size: 14px; }
+.seller-tier { font-size: 11px; color: var(--teal); }
+.seller-stats { display: flex; gap: 16px; }
+.seller-stat { font-size: 12px; color: var(--text3); }
+.seller-stat strong { color: var(--text2); display: block; font-size: 14px; }
+
+/* ── EXCHANGE ── */
+.exchange-tabs { display: flex; gap: 0; margin-bottom: 24px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; width: fit-content; }
+.ex-tab { padding: 10px 24px; font-family: var(--font-cond); font-size: 15px; font-weight: 600; color: var(--text3); cursor: pointer; transition: all .2s; }
+/* Active tab: white bg, not orange bg */
+.ex-tab.active { background: var(--surface2); color: var(--text); border-bottom: 2px solid var(--fire); }
+.ex-tab:not(.active):hover { background: rgba(255,255,255,0.03); color: var(--chrome2); }
+.exchange-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 18px; cursor: pointer; transition: all .25s;
+}
+.exchange-card:hover { border-color: rgba(255,90,0,0.35); transform: translateY(-2px); }
+.ex-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.ex-user { display: flex; align-items: center; gap: 8px; }
+.ex-avatar { width: 32px; height: 32px; background: var(--chrome3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 14px; color: #fff; }
+.ex-status { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; font-family: var(--font-cond); }
+.ex-open { background: rgba(72,187,120,0.1); color: var(--green); border: 1px solid rgba(72,187,120,0.3); }
+.ex-proposed { background: rgba(246,173,85,0.1); color: var(--amber); border: 1px solid rgba(246,173,85,0.3); }
+.ex-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; }
+.ex-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; }
+.ex-item-img { font-size: 36px; opacity: 0.2; margin-bottom: 4px; }
+.ex-item-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.ex-item-brand { font-size: 11px; color: var(--fire); font-family: var(--font-cond); font-weight: 700; letter-spacing: 1px; }
+.ex-arrow { font-size: 20px; color: var(--chrome3); text-align: center; }
+.ex-footer { display: flex; gap: 8px; margin-top: 14px; }
+.btn-sm { padding: 8px 16px; border-radius: 6px; font-family: var(--font-cond); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; }
+.btn-sm-fire { background: var(--fire); border: none; color: #fff; }
+.btn-sm-fire:hover { background: var(--fire2); }
+.btn-sm-outline { background: transparent; border: 1px solid var(--border2); color: var(--text2); }
+.btn-sm-outline:hover { border-color: var(--chrome3); color: var(--chrome2); }
+.btn-sm-danger { background: transparent; border: 1px solid rgba(229,62,62,0.3); color: var(--red); }
+
+/* ── SHOWOFF ── */
+.showoff-grid { columns: 3 280px; gap: 16px; }
+.showoff-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; margin-bottom: 16px; break-inside: avoid;
+  cursor: pointer; transition: all .25s;
+}
+.showoff-card:hover { border-color: rgba(255,90,0,0.35); }
+.showoff-img { height: 220px; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 80px; opacity: 0.12; position: relative; }
+.showoff-body { padding: 14px; }
+.showoff-user { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.showoff-avatar { width: 28px; height: 28px; background: var(--chrome3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; font-family: var(--font-display); }
+.showoff-username { font-size: 13px; font-weight: 600; }
+.showoff-time { font-size: 11px; color: var(--text3); margin-left: auto; }
+.showoff-title { font-family: var(--font-cond); font-size: 18px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+.showoff-desc { font-size: 13px; color: var(--text2); margin-bottom: 12px; line-height: 1.5; }
+.showoff-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.showoff-actions .btn-sm { flex: 1; text-align: center; min-width: 80px; }
+.showoff-footer { padding: 10px 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.like-btn { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--text3); cursor: pointer; transition: color .2s; }
+.like-btn:hover, .like-btn.active { color: var(--teal); }
+.comment-count { font-size: 13px; color: var(--text3); }
+
+/* ── COMMUNITY ── */
+.community-layout { display: grid; grid-template-columns: 1fr 300px; gap: 32px; }
+.forum-categories { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.forum-cat-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 13px; font-family: var(--font-cond); font-weight: 600; color: var(--text2); cursor: pointer; transition: all .2s; }
+.forum-cat-btn.active { border-color: var(--chrome3); color: var(--text); background: rgba(255,255,255,0.04); } .forum-cat-btn:hover { border-color: var(--chrome3); color: var(--chrome2); }
+.forum-post {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all .2s;
+}
+.forum-post:hover { border-color: rgba(255,90,0,0.3); }
+.forum-post-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.forum-cat-tag { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; font-family: var(--font-cond); letter-spacing: 1px; }
+.fp-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.fp-preview { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 10px; }
+.fp-meta { display: flex; gap: 16px; font-size: 12px; color: var(--text3); }
+.community-sidebar-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+.sidebar-title { font-family: var(--font-cond); font-size: 14px; font-weight: 700; letter-spacing: 1px; color: var(--text2); margin-bottom: 12px; }
+.wanted-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.wanted-item:last-child { border-bottom: none; }
+.wanted-name { font-weight: 600; }
+.wanted-count { color: var(--teal); font-size: 12px; font-family: var(--font-cond); font-weight: 700; }
+
+/* ── DASHBOARD ── */
+.dash-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+.dash-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.dash-stat-val { font-family: var(--font-display); font-size: 36px; letter-spacing: 1px; }
+.dash-stat-lbl { font-size: 12px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+.dash-stat-change { font-size: 12px; color: var(--green); margin-top: 4px; }
+.activity-list { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.activity-header { padding: 14px 18px; border-bottom: 1px solid var(--border); font-family: var(--font-cond); font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+.activity-row { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+.activity-row:last-child { border-bottom: none; }
+.activity-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.act-win { background: rgba(72,187,120,0.1); }
+.act-bid { background: rgba(255,90,0,0.1); }
+.act-ex { background: rgba(15,184,160,0.1); }
+.activity-text { flex: 1; }
+.activity-title { font-size: 14px; font-weight: 500; }
+.activity-sub { font-size: 12px; color: var(--text3); }
+.activity-amount { font-family: var(--font-display); font-size: 18px; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  z-index: 200; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--border2); border-radius: 16px;
+  padding: 28px; max-width: 480px; width: 100%;
+  animation: modalIn .2s ease;
+}
+@keyframes modalIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+.modal-title { font-family: var(--font-display); font-size: 32px; letter-spacing: 1px; margin-bottom: 6px; }
+.modal-sub { font-size: 14px; color: var(--text2); margin-bottom: 24px; }
+.modal-close { float: right; cursor: pointer; font-size: 20px; color: var(--text3); transition: color .2s; }
+.modal-close:hover { color: var(--text); }
+.modal-input {
+  width: 100%; padding: 12px 14px; background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 8px; color: var(--text); font-size: 15px; font-family: var(--font-body);
+  outline: none; margin-bottom: 12px; transition: border-color .2s;
+}
+.modal-input:focus { border-color: var(--fire); }
+.modal-notice { background: rgba(255,90,0,0.06); border: 1px solid rgba(255,90,0,0.2); border-radius: 8px; padding: 12px; font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 10px; }
+.btn-full { flex: 1; padding: 13px; border-radius: 8px; font-family: var(--font-cond); font-size: 17px; font-weight: 700; cursor: pointer; transition: all .2s; }
+.btn-full-fire { background: var(--fire); border: none; color: #fff; }
+.btn-full-fire:hover { background: var(--fire2); }
+.btn-full-outline { background: transparent; border: 1px solid var(--border2); color: var(--text2); }
+.btn-full-outline:hover { border-color: var(--chrome2); color: var(--text); }
+.success-icon { font-size: 48px; text-align: center; margin-bottom: 16px; }
+
+/* ── PREMIUM PAGE ── */
+.premium-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.premium-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; position: relative; overflow: hidden; transition: all .25s; }
+.premium-card:hover { transform: translateY(-4px); }
+.premium-card.featured { border-color: var(--fire); background: linear-gradient(135deg, var(--surface) 0%, rgba(255,90,0,0.05) 100%); }
+.premium-card.featured::before { content: 'MOST POPULAR'; position: absolute; top: 16px; right: -28px; background: var(--fire); color: #fff; font-family: var(--font-cond); font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 4px 40px; transform: rotate(45deg); }
+.premium-tier { font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; margin-bottom: 4px; }
+.premium-price { font-family: var(--font-display); font-size: 48px; color: var(--fire); letter-spacing: 1px; }
+.premium-price span { font-size: 18px; color: var(--text2); }
+.premium-features { margin: 20px 0; list-style: none; }
+.premium-features li { padding: 6px 0; font-size: 14px; color: var(--text2); display: flex; gap: 8px; border-bottom: 1px solid var(--border); }
+.premium-features li:last-child { border-bottom: none; }
+.premium-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+
+/* ── FLOWCHART TAB ── */
+.flowchart-wrap { padding-top: 80px; }
+.flow-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; padding: 0 24px; }
+.flow-nav-btn { padding: 8px 20px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font-cond); font-size: 14px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all .2s; }
+.flow-nav-btn.active, .flow-nav-btn:hover { border-color: var(--fire); color: var(--fire); background: rgba(255,90,0,0.05); }
+
+/* ── FOOTER ── */
+footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 40px 24px 24px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; max-width: 1200px; margin: 0 auto; }
+.footer-brand { font-family: var(--font-display); font-size: 32px; letter-spacing: 2px; margin-bottom: 10px; }
+.footer-brand span { color: var(--fire); }
+.footer-tagline { font-size: 14px; color: var(--text3); line-height: 1.6; margin-bottom: 20px; }
+.footer-col h4 { font-family: var(--font-cond); font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--text2); margin-bottom: 14px; }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 8px; font-size: 13px; color: var(--text3); cursor: pointer; transition: color .2s; }
+.footer-links li:hover { color: var(--fire); }
+.footer-bottom { border-top: 1px solid var(--border); margin-top: 32px; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin-left: auto; margin-right: auto; font-size: 12px; color: var(--text3); }
+
+/* ── TRUST PAGE ── */
+.trust-tiers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 32px; }
+.trust-tier { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+.trust-tier-icon { font-size: 28px; margin-bottom: 8px; }
+.trust-tier-name { font-family: var(--font-cond); font-size: 14px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+.trust-tier-req { font-size: 11px; color: var(--text3); }
+
+/* ── MISC UTILS ── */
+.mt8 { margin-top: 8px; }
+.mt16 { margin-top: 16px; }
+.mt24 { margin-top: 24px; }
+.mb16 { margin-bottom: 16px; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.gap8 { gap: 8px; }
+.gap16 { gap: 16px; }
+.pt80 { padding-top: 80px; }
+.chrome-text { color: var(--chrome); }
+.fire-text { color: var(--fire); }
+.teal-text { color: var(--teal); }
+.muted { color: var(--text2); }
+.small { font-size: 12px; color: var(--text3); }
+hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* Responsive */
+@media(max-width:900px) {
+  .detail-layout, .community-layout, .footer-grid { grid-template-columns: 1fr; }
+  .premium-grid { grid-template-columns: 1fr; }
+  .dash-grid { grid-template-columns: repeat(2,1fr); }
+  .trust-tiers { grid-template-columns: repeat(2,1fr); }
+  .showoff-grid { columns: 2 200px; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo" onclick="goPage('home')" style="cursor:pointer;display:flex;align-items:center;">
+    <svg width="210" height="38" viewBox="0 0 210 38" xmlns="http://www.w3.org/2000/svg">
+      <!-- Speed lines — 5 parallel strands, orange centre line brightest -->
+      <line x1="0" y1="8"  x2="210" y2="8"  stroke="rgba(232,85,0,0.18)" stroke-width="1.5"/>
+      <line x1="0" y1="15" x2="210" y2="15" stroke="rgba(232,85,0,0.38)" stroke-width="1.5"/>
+      <line x1="0" y1="22" x2="210" y2="22" stroke="#E85500"              stroke-width="2.5"/>
+      <line x1="0" y1="29" x2="210" y2="29" stroke="rgba(232,85,0,0.38)" stroke-width="1.5"/>
+      <line x1="0" y1="36" x2="210" y2="36" stroke="rgba(232,85,0,0.18)" stroke-width="1.5"/>
+      <!-- SHOW in white, CLUTCH in orange — same Bebas Neue font, sitting on the centre line -->
+      <text x="4" y="30" font-family="'Bebas Neue', sans-serif" font-size="28" letter-spacing="3" fill="#E4E8EF">SHOW</text>
+      <text x="84" y="30" font-family="'Bebas Neue', sans-serif" font-size="28" letter-spacing="3" fill="#E85500">CLUTCH</text>
+    </svg>
+  </div>
+  <div class="nav-links">
+    <div class="nav-link" id="nav-home" onclick="goPage('home')">Home</div>
+    <div class="nav-link" id="nav-auctions" onclick="goPage('auctions')">Auctions</div>
+    <div class="nav-link" id="nav-exchange" onclick="goPage('exchange')">Exchange</div>
+    <div class="nav-link" id="nav-showoff" onclick="goPage('showoff')">Show Off</div>
+    <div class="nav-link" id="nav-community" onclick="goPage('community')">Community</div>
+    <div class="nav-link" id="nav-flowchart" onclick="goPage('flowchart')">Flowchart</div>
+  </div>
+  <div class="nav-right">
+    <div class="btn-nav-outline" onclick="goPage('dashboard')">Dashboard</div>
+    <div class="btn-nav-outline" onclick="goPage('premium')">Premium</div>
+    <div class="btn-nav-fire" onclick="openModal('loginModal')">Sign In</div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════ HOME ═══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-badge">India's first collector-grade die-cast marketplace</div>
+      <div class="hero-title">BID.<br>TRADE.<br><span class="fire-word">SHOW OFF.</span></div>
+      <div class="hero-subtitle">Hot Wheels · Tomica · Matchbox · Mini GT · Greenlight · Majorette</div>
+      <div class="hero-ctas">
+        <button class="btn-fire" onclick="goPage('auctions')">Browse Auctions</button>
+        <button class="btn-outline" onclick="goPage('showoff')">Show Off Collection</button>
+        <button class="btn-outline" onclick="goPage('exchange')">Exchange Trades</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">1,240<span>+</span></div><div class="lbl">Active Collectors</div></div>
+        <div class="hero-stat"><div class="num">340<span>+</span></div><div class="lbl">Live Auctions</div></div>
+        <div class="hero-stat"><div class="num">₹8.4<span>L</span></div><div class="lbl">Traded This Month</div></div>
+        <div class="hero-stat"><div class="num">100<span>%</span></div><div class="lbl">Escrow Protected</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand strip -->
+  <div class="brand-strip">
+    <div class="brand-scroll">
+      <div class="brand-item">HOT WHEELS</div><div class="brand-item">TOMICA</div>
+      <div class="brand-item">MATCHBOX</div><div class="brand-item">MINI GT</div>
+      <div class="brand-item">MAJORETTE</div><div class="brand-item">GREENLIGHT</div>
+      <div class="brand-item">AUTOART</div><div class="brand-item">KYOSHO</div>
+      <div class="brand-item">MAISTO</div><div class="brand-item">BBURAGO</div>
+      <div class="brand-item">ERTL</div><div class="brand-item">CORGI</div>
+      <!-- duplicate for seamless loop -->
+      <div class="brand-item">HOT WHEELS</div><div class="brand-item">TOMICA</div>
+      <div class="brand-item">MATCHBOX</div><div class="brand-item">MINI GT</div>
+      <div class="brand-item">MAJORETTE</div><div class="brand-item">GREENLIGHT</div>
+      <div class="brand-item">AUTOART</div><div class="brand-item">KYOSHO</div>
+      <div class="brand-item">MAISTO</div><div class="brand-item">BBURAGO</div>
+      <div class="brand-item">ERTL</div><div class="brand-item">CORGI</div>
+    </div>
+  </div>
+
+  <!-- Live Auctions preview -->
+  <div class="section">
+    <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <div>
+        <div class="section-label">Ending Soon</div>
+        <div class="section-title">Live Auctions</div>
+      </div>
+      <button class="btn-outline" style="padding:10px 24px;font-size:16px;" onclick="goPage('auctions')">View All →</button>
+    </div>
+    <div class="card-grid">
+      <!-- Card 1 -->
+      <div class="auction-card" onclick="goPage('auction-detail')">
+        <div class="card-img">
+          <div class="card-img-bg"></div>
+          <div class="card-img-placeholder">🚗</div>
+          <div class="card-badge badge-live">● LIVE</div>
+          <div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div>
+          <div style="position:absolute;bottom:10px;left:10px;"><span class="card-badge badge-th">TREASURE HUNT</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Hot Wheels</div>
+          <div class="card-name">2022 Porsche 911 GT3 — Zamac Super TH</div>
+          <div class="card-series">Treasure Hunt Series · Card #9/10</div>
+          <div class="card-footer">
+            <div>
+              <div class="card-price-label">Current Bid</div>
+              <div class="card-price"><span class="currency">₹</span>4,200</div>
+              <div class="card-bids">↑ 18 bids</div>
+            </div>
+            <div class="card-timer">
+              <div class="timer-val">02:14:38</div>
+              <div class="timer-lbl">TIME LEFT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="auction-card" onclick="goPage('auction-detail')">
+        <div class="card-img">
+          <div class="card-img-bg"></div>
+          <div class="card-img-placeholder">🚕</div>
+          <div class="card-badge badge-verified">AI VERIFIED</div>
+          <div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Tomica</div>
+          <div class="card-name">Toyota GR86 — Limited Edition Red</div>
+          <div class="card-series">Tomica Limited Vintage Neo · 2023</div>
+          <div class="card-footer">
+            <div>
+              <div class="card-price-label">Current Bid</div>
+              <div class="card-price"><span class="currency">₹</span>2,800</div>
+              <div class="card-bids">↑ 11 bids</div>
+            </div>
+            <div class="card-timer">
+              <div class="timer-val">05:42:10</div>
+              <div class="timer-lbl">TIME LEFT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="auction-card" onclick="goPage('auction-detail')">
+        <div class="card-img">
+          <div class="card-img-bg"></div>
+          <div class="card-img-placeholder">🏎</div>
+          <div class="card-badge badge-ending">ENDING SOON</div>
+          <div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Mini GT</div>
+          <div class="card-name">McLaren P1 — Volcano Orange</div>
+          <div class="card-series">Mini GT 1:64 Scale · #097</div>
+          <div class="card-footer">
+            <div>
+              <div class="card-price-label">Current Bid</div>
+              <div class="card-price"><span class="currency">₹</span>1,650</div>
+              <div class="card-bids">↑ 7 bids</div>
+            </div>
+            <div class="card-timer">
+              <div class="timer-val" style="color:var(--red);">00:22:05</div>
+              <div class="timer-lbl">TIME LEFT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="auction-card" onclick="goPage('auction-detail')">
+        <div class="card-img">
+          <div class="card-img-bg"></div>
+          <div class="card-img-placeholder">🚙</div>
+          <div class="card-badge badge-verified">AI VERIFIED</div>
+          <div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Matchbox</div>
+          <div class="card-name">1970 Ford Escort RS1600</div>
+          <div class="card-series">Matchbox Moving Parts · Collector Edition</div>
+          <div class="card-footer">
+            <div>
+              <div class="card-price-label">Buy It Now</div>
+              <div class="card-price"><span class="currency">₹</span>3,500</div>
+              <div class="card-bids">↑ 4 bids · Reserve met</div>
+            </div>
+            <div class="card-timer">
+              <div class="timer-val">1d 08:12</div>
+              <div class="timer-lbl">TIME LEFT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Show Off preview -->
+  <hr class="section-divider">
+  <div class="section">
+    <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <div>
+        <div class="section-label">Community Showcase</div>
+        <div class="section-title">Show Off Wall</div>
+      </div>
+      <button class="btn-outline" style="padding:10px 24px;font-size:16px;" onclick="goPage('showoff')">View All →</button>
+    </div>
+    <div class="card-grid">
+      <div class="auction-card" onclick="goPage('showoff')">
+        <div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🏆</div><div class="card-badge badge-showoff">STRICTLY SHOW OFF</div></div>
+        <div class="card-body">
+          <div class="card-brand">Hot Wheels</div>
+          <div class="card-name">Original 1969 Python — Red Line</div>
+          <div class="card-series">By @RajeshMumbai · 48 comments</div>
+        </div>
+      </div>
+      <div class="auction-card" onclick="goPage('showoff')">
+        <div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚀</div></div>
+        <div class="card-body">
+          <div class="card-brand">Tomica</div>
+          <div class="card-name">Nissan Skyline GT-R R34 — Bayside Blue</div>
+          <div class="card-series">By @collector_delhi · Raise for Auction? 12 requests</div>
+        </div>
+      </div>
+      <div class="auction-card" onclick="goPage('showoff')">
+        <div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">⚡</div></div>
+        <div class="card-body">
+          <div class="card-brand">Greenlight</div>
+          <div class="card-name">Breaking Bad RV — Screen Used Replica</div>
+          <div class="card-series">By @priya_cars · Exchange offer pending</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust strip -->
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:32px 0;">
+    <div class="section" style="padding:0 24px;">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;">
+        <div style="text-align:center;padding:16px;">
+          <div style="font-size:28px;margin-bottom:8px;">🔒</div>
+          <div style="font-family:var(--font-cond);font-size:16px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;">Escrow Protection</div>
+          <div style="font-size:13px;color:var(--text3);">100% of payments held by Razorpay until you confirm delivery</div>
+        </div>
+        <div style="text-align:center;padding:16px;">
+          <div style="font-size:28px;margin-bottom:8px;">🤖</div>
+          <div style="font-family:var(--font-cond);font-size:16px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;">AI Authenticity Check</div>
+          <div style="font-size:13px;color:var(--text3);">AI-assisted scan on every listing. Not a guarantee — a signal.</div>
+        </div>
+        <div style="text-align:center;padding:16px;">
+          <div style="font-size:28px;margin-bottom:8px;">🚫</div>
+          <div style="font-family:var(--font-cond);font-size:16px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;">No Off-Platform Dealing</div>
+          <div style="font-size:13px;color:var(--text3);">Auto-filter blocks contact sharing. Violators are permanently banned.</div>
+        </div>
+        <div style="text-align:center;padding:16px;">
+          <div style="font-size:28px;margin-bottom:8px;">📦</div>
+          <div style="font-family:var(--font-cond);font-size:16px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;">Shiprocket Labels</div>
+          <div style="font-size:13px;color:var(--text3);">Platform generates labels. Your address is never shared with sellers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg width="240" height="44" viewBox="0 0 240 44" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="10" x2="240" y2="10" stroke="rgba(232,85,0,0.18)" stroke-width="1.5"/>
+            <line x1="0" y1="18" x2="240" y2="18" stroke="rgba(232,85,0,0.38)" stroke-width="1.5"/>
+            <line x1="0" y1="26" x2="240" y2="26" stroke="#E85500"              stroke-width="2.5"/>
+            <line x1="0" y1="34" x2="240" y2="34" stroke="rgba(232,85,0,0.38)" stroke-width="1.5"/>
+            <line x1="0" y1="42" x2="240" y2="42" stroke="rgba(232,85,0,0.18)" stroke-width="1.5"/>
+            <text x="4" y="36" font-family="'Bebas Neue', sans-serif" font-size="32" letter-spacing="3" fill="#E4E8EF">SHOW</text>
+            <text x="98" y="36" font-family="'Bebas Neue', sans-serif" font-size="32" letter-spacing="3" fill="#E85500">CLUTCH</text>
+          </svg>
+        </div>
+        <div class="footer-tagline">India's only collector-grade die-cast marketplace.<br>Bid. Trade. Show Off. All in one place.</div>
+        <div style="font-size:13px;color:var(--text3);">📍 Bengaluru, India · diecastbazaar.in</div>
+      </div>
+      <div>
+        <h4>Marketplace</h4>
+        <ul class="footer-links">
+          <li onclick="goPage('auctions')">Browse Auctions</li>
+          <li onclick="goPage('exchange')">Exchange Board</li>
+          <li onclick="goPage('showoff')">Show Off Wall</li>
+          <li>Most Wanted</li>
+          <li>Trade History</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Community</h4>
+        <ul class="footer-links">
+          <li onclick="goPage('community')">Forum</li>
+          <li>City Clubs</li>
+          <li>Events</li>
+          <li>Fraud Alerts</li>
+          <li>Collector Blog</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul class="footer-links">
+          <li>Terms &amp; Conditions</li>
+          <li>Privacy Policy</li>
+          <li>Escrow Policy</li>
+          <li>Seller Agreement</li>
+          <li>Contact Support</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 ShowClutch · All rights reserved · GST compliant · DPDP Act 2023 compliant</span>
+      <span>Powered by Razorpay Escrow · Shiprocket · Cloudflare</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════ AUCTIONS ═══════════════════════════════════════ -->
+<div id="page-auctions" class="page">
+  <div class="section pt80">
+    <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div class="section-label">Live Now</div>
+        <div class="section-title">All Auctions</div>
+      </div>
+      <button class="btn-fire" onclick="goPage('create-auction')">+ New Auction</button>
+    </div>
+    <!-- Filter bar -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+      <select style="padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--font-cond);font-size:14px;outline:none;">
+        <option>All Brands</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option><option>Mini GT</option><option>Majorette</option><option>Greenlight</option><option>AutoArt</option>
+      </select>
+      <select style="padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--font-cond);font-size:14px;outline:none;">
+        <option>All Categories</option><option>Treasure Hunt</option><option>Super TH</option><option>Zamac</option><option>Limited Edition</option><option>Vintage/Redline</option>
+      </select>
+      <select style="padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--font-cond);font-size:14px;outline:none;">
+        <option>Sort: Ending Soon</option><option>Sort: Price Low–High</option><option>Sort: Price High–Low</option><option>Sort: Most Bids</option><option>Sort: Newest Listed</option>
+      </select>
+      <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;">
+        <input type="checkbox" id="ai-verified" style="accent-color:var(--fire);">
+        <label for="ai-verified" style="font-family:var(--font-cond);font-size:14px;color:var(--text2);cursor:pointer;">AI Verified Only</label>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;">
+        <input type="checkbox" id="buy-now-only" style="accent-color:var(--fire);">
+        <label for="buy-now-only" style="font-family:var(--font-cond);font-size:14px;color:var(--text2);cursor:pointer;">Buy It Now</label>
+      </div>
+    </div>
+    <div class="card-grid">
+      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚗</div><div class="card-badge badge-live">● LIVE</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div><div style="position:absolute;bottom:10px;left:10px;"><span class="card-badge badge-th">TREASURE HUNT</span></div></div><div class="card-body"><div class="card-brand">Hot Wheels</div><div class="card-name">2022 Porsche 911 GT3 — Zamac Super TH</div><div class="card-series">Treasure Hunt Series · Card #9/10</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>4,200</div><div class="card-bids">↑ 18 bids</div></div><div class="card-timer"><div class="timer-val">02:14:38</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
+      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚕</div><div class="card-badge badge-verified">AI VERIFIED</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Tomica</div><div class="card-name">Toyota GR86 — Limited Edition Red</div><div class="card-series">Tomica Limited Vintage Neo · 2023</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>2,800</div><div class="card-bids">↑ 11 bids</div></div><div class="card-timer"><div class="timer-val">05:42:10</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
+      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🏎</div><div class="card-badge badge-ending">ENDING SOON</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Mini GT</div><div class="card-name">McLaren P1 — Volcano Orange</div><div class="card-series">Mini GT 1:64 Scale · #097</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>1,650</div><div class="card-bids">↑ 7 bids</div></div><div class="card-timer"><div class="timer-val" style="color:var(--red);">00:22:05</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
+      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚙</div><div class="card-badge badge-verified">AI VERIFIED</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Matchbox</div><div class="card-name">1970 Ford Escort RS1600</div><div class="card-series">Matchbox Moving Parts · Collector Edition</div><div class="card-footer"><div><div class="card-price-label">Buy It Now</div><div class="card-price"><span class="currency">₹</span>3,500</div><div class="card-bids">↑ 4 bids · Reserve met</div></div><div class="card-timer"><div class="timer-val">1d 08:12</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
+      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">⚡</div></div><div class="card-body"><div class="card-brand">Majorette</div><div class="card-name">Bugatti Chiron — Blue/Black</div><div class="card-series">Majorette Deluxe Cars · Metal Body</div><div class="card-footer"><div><div class="card-price-label">Starting Bid</div><div class="card-price"><span class="currency">₹</span>800</div><div class="card-bids">No bids yet</div></div><div class="card-timer"><div class="timer-val">2d 14:00</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
+      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🏆</div><div class="card-badge badge-th">SUPER TH</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Hot Wheels</div><div class="card-name">Deora III — Super Treasure Hunt</div><div class="card-series">2019 Super TH · Real Rider Wheels</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>6,800</div><div class="card-bids">↑ 24 bids</div></div><div class="card-timer"><div class="timer-val">08:30:00</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ AUCTION DETAIL ═══════════════════════════════════════ -->
+<div id="page-auction-detail" class="page">
+  <div class="section">
+    <div class="detail-layout">
+      <div>
+        <!-- Image gallery -->
+        <div class="img-gallery">
+          <div class="img-main">🚗</div>
+          <div class="img-thumbs">
+            <div class="img-thumb active">🚗</div>
+            <div class="img-thumb">📸</div>
+            <div class="img-thumb">📷</div>
+            <div class="img-thumb">🔍</div>
+            <div class="img-thumb">🎥</div>
+          </div>
+        </div>
+        <div class="detail-info">
+          <div class="detail-brand">Hot Wheels · Treasure Hunt Series</div>
+          <div class="detail-name">2022 Porsche 911 GT3</div>
+          <div class="detail-series">Zamac Super Treasure Hunt · Card #9/10 · Real Rider Spectraflame</div>
+          <div class="detail-tags">
+            <span class="tag tag-fire">Super TH</span>
+            <span class="tag tag-fire">Zamac</span>
+            <span class="tag tag-teal">Card: Near Mint</span>
+            <span class="tag tag-gray">1:64 Scale</span>
+            <span class="tag tag-gray">2022 Series</span>
+          </div>
+          <!-- AI Scan -->
+          <div class="ai-scan-card">
+            <div class="ai-scan-header">
+              <div class="ai-scan-icon">🤖</div>
+              <div class="ai-scan-title">AI AUTHENTICITY SCAN</div>
+              <div class="ai-scan-badge">VERIFIED ✓</div>
+            </div>
+            <div class="ai-scan-disclaimer">
+              <strong style="color:var(--teal);">Match: 91% confidence</strong> — Wheel pattern, tampo alignment, card art, and blister seal match reference database for this model/series.<br>
+              ⚠️ <em>This is an AI-assisted check, not a guarantee of authenticity. Platform does not certify items. Bid with your own judgment.</em>
+            </div>
+          </div>
+          <!-- Bid history -->
+          <div class="bid-history">
+            <div class="bid-history-title">BID HISTORY</div>
+            <div class="bid-row"><div><div class="bid-user"><strong>@mumbai_collector</strong></div><div class="bid-time">2 min ago</div></div><div class="bid-amount">₹4,200</div></div>
+            <div class="bid-row"><div><div class="bid-user"><strong>@hot_wheels_delhi</strong></div><div class="bid-time">8 min ago</div></div><div class="bid-amount">₹3,900</div></div>
+            <div class="bid-row"><div><div class="bid-user"><strong>@blr_diecast</strong></div><div class="bid-time">22 min ago</div></div><div class="bid-amount">₹3,600</div></div>
+            <div class="bid-row"><div><div class="bid-user"><strong>@mumbai_collector</strong></div><div class="bid-time">45 min ago</div></div><div class="bid-amount">₹3,300</div></div>
+            <div class="bid-row" style="border-bottom:none;"><div><div class="bid-user muted">+ 14 earlier bids</div></div><div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bid sidebar -->
+      <div class="bid-sidebar">
+        <div class="bid-box">
+          <div class="bid-box-header">
+            <div class="bid-current-label">Current Highest Bid</div>
+            <div class="bid-current-amount">₹4,200</div>
+            <div class="bid-current-meta">Reserve price met · 18 bids · 24 watching</div>
+          </div>
+          <div class="bid-timer-bar">
+            <div class="bid-timer-live"><div class="live-dot"></div><span style="font-family:var(--font-cond);font-size:13px;font-weight:700;color:var(--red);">LIVE</span></div>
+            <div class="bid-timer-countdown">02:14:38</div>
+          </div>
+          <div class="bid-body">
+            <div class="input-group">
+              <div class="input-label">Your Bid (min ₹4,300)</div>
+              <input class="bid-input" type="number" placeholder="₹ Enter amount" min="4300">
+            </div>
+            <div class="input-group">
+              <div class="input-label">Proxy Bid (auto-bid up to this max)</div>
+              <input class="bid-input" type="number" placeholder="₹ Optional max limit">
+            </div>
+            <div class="bid-notice">
+              ⚠️ Bids above ₹2,000 require a 10% deposit (₹420) via Razorpay to confirm your intent. Refunded if you don't win.
+            </div>
+            <button class="btn-bid" onclick="openModal('bidModal')">PLACE BID</button>
+            <button class="btn-watchlist">♡ Add to Watchlist</button>
+            <div class="escrow-notice">
+              🔒 <strong>Escrow Protected:</strong> Your payment is held by Razorpay and only released to the seller after you confirm receipt and condition within 48 hours.
+            </div>
+          </div>
+        </div>
+        <!-- Buy It Now -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:12px;">
+          <div style="font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-bottom:8px;">BUY IT NOW</div>
+          <div style="font-family:var(--font-display);font-size:32px;margin-bottom:12px;">₹7,500</div>
+          <button class="btn-fire" style="width:100%;padding:12px;" onclick="openModal('bidModal')">Buy Now — ₹7,500</button>
+        </div>
+        <!-- Seller card -->
+        <div class="seller-card">
+          <div class="seller-header">
+            <div class="seller-avatar">R</div>
+            <div>
+              <div class="seller-name">@rajesh_hwcollector</div>
+              <div class="seller-tier">⭐ Power Seller · Verified</div>
+            </div>
+          </div>
+          <div class="seller-stats">
+            <div class="seller-stat"><strong>142</strong>Sales</div>
+            <div class="seller-stat"><strong>4.9</strong>Rating</div>
+            <div class="seller-stat"><strong>0</strong>Disputes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ CREATE AUCTION ═══════════════════════════════════════ -->
+<div id="page-create-auction" class="page">
+  <div class="section pt80">
+    <div class="section-label">Seller</div>
+    <div class="section-title" style="margin-bottom:32px;">Create New Auction</div>
+    <!-- Steps -->
+    <div style="display:flex;gap:0;margin-bottom:32px;border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="flex:1;padding:12px;text-align:center;background:var(--fire);color:#fff;font-family:var(--font-cond);font-size:13px;font-weight:700;">1. PHOTOS</div>
+      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">2. DETAILS</div>
+      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">3. PRICING</div>
+      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">4. AI SCAN</div>
+      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">5. SHIPPING</div>
+      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">6. REVIEW</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <!-- Upload zone -->
+        <div style="border:2px dashed var(--border2);border-radius:12px;padding:40px;text-align:center;margin-bottom:20px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--fire)'" onmouseout="this.style.borderColor='var(--border2)'">
+          <div style="font-size:40px;margin-bottom:12px;opacity:0.4;">📸</div>
+          <div style="font-family:var(--font-cond);font-size:18px;font-weight:700;margin-bottom:4px;">Upload Photos</div>
+          <div style="font-size:13px;color:var(--text3);">Max 10 MB per photo · Auto-compressed to WebP · Max 8 photos</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:6px;">EXIF data (GPS location) stripped automatically</div>
+        </div>
+        <div style="border:2px dashed var(--border2);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border2)'">
+          <div style="font-size:32px;margin-bottom:8px;opacity:0.4;">🎥</div>
+          <div style="font-family:var(--font-cond);font-size:16px;font-weight:700;margin-bottom:4px;">Upload Video (required for items ≥ ₹2,000)</div>
+          <div style="font-size:12px;color:var(--text3);">Any size accepted · Auto-compressed to 720p via Cloudflare Stream · Auto-deleted 90 days post-sale</div>
+        </div>
+      </div>
+      <div>
+        <div style="margin-bottom:16px;">
+          <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:500;">Brand *</div>
+          <select class="bid-input" style="cursor:pointer;"><option>Select brand...</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option><option>Mini GT</option><option>Majorette</option><option>Greenlight</option><option>AutoArt</option><option>Kyosho</option><option>Maisto</option><option>Other</option></select>
+        </div>
+        <div style="margin-bottom:16px;">
+          <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:500;">Car Name / Model *</div>
+          <input class="bid-input" type="text" placeholder="e.g. 2022 Porsche 911 GT3">
+        </div>
+        <div style="margin-bottom:16px;">
+          <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:500;">Series / Edition</div>
+          <input class="bid-input" type="text" placeholder="e.g. Treasure Hunt Series #9">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div>
+            <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;">Starting Bid (₹) *</div>
+            <input class="bid-input" type="number" placeholder="₹500 minimum">
+          </div>
+          <div>
+            <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;">Reserve Price (₹)</div>
+            <input class="bid-input" type="number" placeholder="Optional">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div>
+            <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;">Auction Start *</div>
+            <input class="bid-input" type="datetime-local">
+          </div>
+          <div>
+            <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;">Auction End *</div>
+            <input class="bid-input" type="datetime-local">
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);margin-bottom:16px;">
+          <input type="checkbox" id="buy-now-toggle" style="accent-color:var(--fire);width:16px;height:16px;">
+          <label for="buy-now-toggle" style="font-family:var(--font-cond);font-size:15px;font-weight:600;cursor:pointer;">Enable Buy It Now</label>
+          <input class="bid-input" type="number" placeholder="₹ BIN Price" style="margin-left:auto;width:140px;">
+        </div>
+        <button class="btn-fire" style="width:100%;padding:13px;font-size:17px;" onclick="openModal('successModal')">Continue to AI Scan →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ EXCHANGE ═══════════════════════════════════════ -->
+<div id="page-exchange" class="page">
+  <div class="section pt80">
+    <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div class="section-label">C2C Trades</div>
+        <div class="section-title">Exchange Board</div>
+      </div>
+      <button class="btn-fire" onclick="openModal('exchangeModal')">+ Post Exchange Request</button>
+    </div>
+    <div class="exchange-tabs">
+      <div class="ex-tab active">Open Requests</div>
+      <div class="ex-tab">My Trades</div>
+      <div class="ex-tab">Completed</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+      <select style="padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--font-cond);font-size:14px;outline:none;"><option>All Exchange Types</option><option>1-for-1</option><option>Bundle for 1</option><option>Exchange + Cash Top-up</option></select>
+      <select style="padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--font-cond);font-size:14px;outline:none;"><option>All Brands</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option></select>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <!-- Exchange card 1 -->
+      <div class="exchange-card">
+        <div class="ex-header">
+          <div class="ex-user"><div class="ex-avatar">P</div><div><div style="font-size:14px;font-weight:600;">@priya_cars</div><div class="small">Mumbai · 38 trades · ⭐ 4.8</div></div></div>
+          <div><span class="ex-status ex-open">OPEN</span></div>
+        </div>
+        <div class="ex-grid">
+          <div class="ex-item"><div class="ex-item-img">🏎</div><div class="ex-item-name">McLaren Senna — Orange</div><div class="ex-item-brand">MINI GT</div></div>
+          <div class="ex-arrow">⇄</div>
+          <div class="ex-item"><div class="ex-item-img">🚗</div><div class="ex-item-name">Any TH / Super TH</div><div class="ex-item-brand">HOT WHEELS</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--text3);margin-top:10px;">Will add ₹300–₹500 cash top-up depending on condition. Card must be near mint.</div>
+        <div class="ex-footer">
+          <button class="btn-sm btn-sm-fire" onclick="openModal('exchangeModal')">Propose Trade</button>
+          <button class="btn-sm btn-sm-outline">Message Seller</button>
+          <button class="btn-sm btn-sm-outline">View Profile</button>
+        </div>
+      </div>
+      <!-- Exchange card 2 -->
+      <div class="exchange-card">
+        <div class="ex-header">
+          <div class="ex-user"><div class="ex-avatar">K</div><div><div style="font-size:14px;font-weight:600;">@karthik_tomica</div><div class="small">Bengaluru · 21 trades · ⭐ 4.9</div></div></div>
+          <div><span class="ex-status ex-proposed">PROPOSED</span></div>
+        </div>
+        <div class="ex-grid">
+          <div class="ex-item"><div class="ex-item-img">🚕</div><div class="ex-item-img" style="font-size:28px;">🚕</div><div class="ex-item-name">Nissan GT-R R35 + Honda NSX</div><div class="ex-item-brand">TOMICA × 2</div></div>
+          <div class="ex-arrow">⇄</div>
+          <div class="ex-item"><div class="ex-item-img">🚗</div><div class="ex-item-name">Ferrari LaFerrari</div><div class="ex-item-brand">HOT WHEELS ELITE</div></div>
+        </div>
+        <div class="ex-footer">
+          <button class="btn-sm btn-sm-fire">Accept Trade</button>
+          <button class="btn-sm btn-sm-outline">Counter Offer</button>
+          <button class="btn-sm btn-sm-danger">Decline</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SHOW OFF ═══════════════════════════════════════ -->
+<div id="page-showoff" class="page">
+  <div class="section pt80">
+    <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div class="section-label">Collector Showcase</div>
+        <div class="section-title">Show Off Wall</div>
+      </div>
+      <button class="btn-fire" onclick="openModal('showoffModal')">+ Post Your Piece</button>
+    </div>
+    <div class="showoff-grid">
+      <div class="showoff-card">
+        <div class="showoff-img">🏆<div style="position:absolute;top:10px;left:10px;"><span class="card-badge badge-showoff">STRICTLY SHOW OFF</span></div></div>
+        <div class="showoff-body">
+          <div class="showoff-user"><div class="showoff-avatar">R</div><div class="showoff-username">@rajesh_hwcollector</div><div class="showoff-time">2 hrs ago</div></div>
+          <div class="showoff-title">1969 Python Red Line — OG Card</div>
+          <div class="showoff-desc">Found this at a flea market in Dharavi. Original 1969 with intact blister. Not for sale. This stays with me forever.</div>
+          <div class="showoff-actions">
+            <button class="btn-sm btn-sm-outline">💬 48 Comments</button>
+          </div>
+        </div>
+        <div class="showoff-footer">
+          <div class="like-btn" onclick="toggleLike(this)">♡ 124 likes</div>
+          <div class="comment-count" style="font-size:12px;color:var(--text3);">STRICTLY SHOW OFF ONLY</div>
+        </div>
+      </div>
+      <div class="showoff-card">
+        <div class="showoff-img">🚀</div>
+        <div class="showoff-body">
+          <div class="showoff-user"><div class="showoff-avatar">A</div><div class="showoff-username">@ananya_collector</div><div class="showoff-time">5 hrs ago</div></div>
+          <div class="showoff-title">Nissan Skyline GT-R R34 — Tomica LV</div>
+          <div class="showoff-desc">Finally got the Bayside Blue. Been hunting for 8 months. The detail on this is insane for 1:64.</div>
+          <div class="showoff-actions">
+            <button class="btn-sm btn-sm-fire" onclick="openModal('showoffModal')">Raise for Auction</button>
+            <button class="btn-sm btn-sm-outline">Exchange Request</button>
+          </div>
+        </div>
+        <div class="showoff-footer">
+          <div class="like-btn active">♥ 87 likes</div>
+          <div class="comment-count">💬 23</div>
+        </div>
+      </div>
+      <div class="showoff-card">
+        <div class="showoff-img">⚡<div style="position:absolute;top:10px;left:10px;"><span class="card-badge badge-th">SUPER TH</span></div></div>
+        <div class="showoff-body">
+          <div class="showoff-user"><div class="showoff-avatar">V</div><div class="showoff-username">@vivek_blr</div><div class="showoff-time">1 day ago</div></div>
+          <div class="showoff-title">Deora III Super TH — Mint in Card</div>
+          <div class="showoff-desc">Still debating whether to auction this. Got 12 auction requests already. What does the community think?</div>
+          <div class="showoff-actions">
+            <button class="btn-sm btn-sm-fire" onclick="openModal('showoffModal')">Raise for Auction</button>
+            <button class="btn-sm btn-sm-outline">Continue Discussion</button>
+            <button class="btn-sm btn-sm-danger">Keep as Show Off</button>
+          </div>
+        </div>
+        <div class="showoff-footer">
+          <div class="like-btn" onclick="toggleLike(this)">♡ 212 likes</div>
+          <div class="comment-count">💬 67</div>
+        </div>
+      </div>
+      <div class="showoff-card">
+        <div class="showoff-img">🚙</div>
+        <div class="showoff-body">
+          <div class="showoff-user"><div class="showoff-avatar">M</div><div class="showoff-username">@meera_matchbox</div><div class="showoff-time">2 days ago</div></div>
+          <div class="showoff-title">Matchbox Sky Busters — Full 1985 Set</div>
+          <div class="showoff-desc">Complete 1985 Sky Busters set in original packaging. 24 pieces all mint. Family collection since 1985.</div>
+          <div class="showoff-actions">
+            <button class="btn-sm btn-sm-outline">💬 31 Comments</button>
+            <button class="btn-sm btn-sm-outline">Exchange Request</button>
+          </div>
+        </div>
+        <div class="showoff-footer">
+          <div class="like-btn" onclick="toggleLike(this)">♡ 156 likes</div>
+          <div class="comment-count">💬 31</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ COMMUNITY ═══════════════════════════════════════ -->
+<div id="page-community" class="page">
+  <div class="section pt80">
+    <div class="section-label">Forum</div>
+    <div class="section-title" style="margin-bottom:24px;">Community</div>
+    <div class="community-layout">
+      <div>
+        <div class="forum-categories">
+          <div class="forum-cat-btn active">All</div>
+          <div class="forum-cat-btn">Authenticity Help</div>
+          <div class="forum-cat-btn">Holy Grail Hunts</div>
+          <div class="forum-cat-btn">Unboxing</div>
+          <div class="forum-cat-btn">City Clubs</div>
+          <div class="forum-cat-btn">Fraud Alerts</div>
+          <div class="forum-cat-btn">Events</div>
+          <div class="forum-cat-btn">Introductions</div>
+        </div>
+        <button class="btn-fire" style="margin-bottom:20px;padding:10px 24px;" onclick="openModal('loginModal')">+ New Post</button>
+        <div class="forum-post">
+          <div class="forum-post-header"><span class="forum-cat-tag tag-fire tag">AUTHENTICITY</span><span class="small" style="margin-left:auto;">2 hr ago</span></div>
+          <div class="fp-title">Is this Porsche 911 GT3 TH genuine? Wheels look off</div>
+          <div class="fp-preview">Got this from OLX seller who claims it's real. The spectraflame looks a bit dull and wheel spokes seem different from reference photos I've seen...</div>
+          <div class="fp-meta"><span>👤 @priya_cars</span><span>💬 14 replies</span><span>👁 234 views</span></div>
+        </div>
+        <div class="forum-post">
+          <div class="forum-post-header"><span class="forum-cat-tag tag-teal tag" style="border:1px solid var(--teal);color:var(--teal);background:rgba(15,184,160,0.1);">HOLY GRAIL</span><span class="small" style="margin-left:auto;">6 hr ago</span></div>
+          <div class="fp-title">Finally found the 1995 Hot Wheels Collector Edition Camaro — Bengaluru swap meet</div>
+          <div class="fp-preview">After 3 years of hunting this is the moment. Full story inside with photos. Also met 6 other collectors at the meet...</div>
+          <div class="fp-meta"><span>👤 @vivek_blr</span><span>💬 42 replies</span><span>👁 891 views</span></div>
+        </div>
+        <div class="forum-post">
+          <div class="forum-post-header"><span class="forum-cat-tag" style="background:rgba(229,62,62,0.1);color:var(--red);border:1px solid rgba(229,62,62,0.3);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;font-family:var(--font-cond);letter-spacing:1px;">FRAUD ALERT</span><span class="small" style="margin-left:auto;">1 day ago</span></div>
+          <div class="fp-title">⚠️ Fake Mini GT McLaren Senna circulating — How to spot them</div>
+          <div class="fp-preview">Multiple reports of counterfeit Mini GT #097 McLaren Senna being sold on WhatsApp groups. Here are the tell-tale signs: base casting, wheel colour difference...</div>
+          <div class="fp-meta"><span>👤 @admin_diecastbazaar</span><span>💬 88 replies</span><span>📌 PINNED</span></div>
+        </div>
+        <div class="forum-post">
+          <div class="forum-post-header"><span class="forum-cat-tag tag-gray tag">CITY CLUBS</span><span class="small" style="margin-left:auto;">2 days ago</span></div>
+          <div class="fp-title">Mumbai Die-Cast Meetup — Bandra, March 30th</div>
+          <div class="fp-preview">Organizing the first Mumbai chapter meet. Bring your collections, swap, discuss. Entry free. Venue: Blue Tokai Bandra. RSVP in comments...</div>
+          <div class="fp-meta"><span>👤 @mumbai_collector</span><span>💬 56 replies</span><span>📅 Event</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="community-sidebar-card">
+          <div class="sidebar-title">🔥 MOST WANTED</div>
+          <div class="wanted-item"><div class="wanted-name">HW Super TH Deora III</div><div class="wanted-count">34 hunters</div></div>
+          <div class="wanted-item"><div class="wanted-name">Tomica LV Skyline R34 Bayside Blue</div><div class="wanted-count">28 hunters</div></div>
+          <div class="wanted-item"><div class="wanted-name">Mini GT #001 Lambo Aventador</div><div class="wanted-count">21 hunters</div></div>
+          <div class="wanted-item"><div class="wanted-name">1969 Python Red Line OG</div><div class="wanted-count">18 hunters</div></div>
+          <button class="btn-sm btn-sm-outline" style="width:100%;margin-top:12px;text-align:center;" onclick="openModal('loginModal')">+ Add to Most Wanted</button>
+        </div>
+        <div class="community-sidebar-card">
+          <div class="sidebar-title">📊 MARKET PULSE</div>
+          <div style="font-size:13px;color:var(--text2);line-height:2;">
+            <div>Avg TH sale: <strong style="color:var(--fire);">₹3,840</strong></div>
+            <div>Avg Super TH: <strong style="color:var(--fire);">₹7,200</strong></div>
+            <div>Auctions this week: <strong>48</strong></div>
+            <div>Highest this week: <strong style="color:var(--fire);">₹18,500</strong></div>
+          </div>
+        </div>
+        <div class="community-sidebar-card">
+          <div class="sidebar-title">🏙️ CITY CLUBS</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;">
+            <div style="display:flex;justify-content:space-between;color:var(--text2);"><span>Mumbai</span><span style="color:var(--fire);">148 members</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--text2);"><span>Delhi NCR</span><span style="color:var(--fire);">112 members</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--text2);"><span>Bengaluru</span><span style="color:var(--fire);">94 members</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--text2);"><span>Hyderabad</span><span style="color:var(--fire);">67 members</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--text2);"><span>Pune</span><span style="color:var(--fire);">55 members</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ DASHBOARD ═══════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+  <div class="section pt80">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+      <div><div class="section-label">Your Account</div><div class="section-title">Dashboard</div></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-outline" style="padding:10px 20px;font-size:15px;" onclick="goPage('create-auction')">+ New Auction</button>
+        <button class="btn-fire" style="padding:10px 20px;font-size:15px;">Seller Dashboard →</button>
+      </div>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-stat"><div class="dash-stat-val fire-text">₹24,800</div><div class="dash-stat-lbl">Total Bought</div><div class="dash-stat-change">↑ 3 items this month</div></div>
+      <div class="dash-stat"><div class="dash-stat-val">₹18,400</div><div class="dash-stat-lbl">Total Sold</div><div class="dash-stat-change">↑ 2 completed auctions</div></div>
+      <div class="dash-stat"><div class="dash-stat-val teal-text">14</div><div class="dash-stat-lbl">Watchlist Items</div></div>
+      <div class="dash-stat"><div class="dash-stat-val">4.9<span style="font-size:18px;color:var(--text3);">/5</span></div><div class="dash-stat-lbl">Seller Rating</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="activity-list">
+        <div class="activity-header">Recent Activity</div>
+        <div class="activity-row"><div class="activity-icon act-win">🏆</div><div class="activity-text"><div class="activity-title">Won: Tomica GR86 Limited</div><div class="activity-sub">Escrow released · Delivered</div></div><div class="activity-amount fire-text">₹2,800</div></div>
+        <div class="activity-row"><div class="activity-icon act-bid">⬆️</div><div class="activity-text"><div class="activity-title">Outbid on: Deora III Super TH</div><div class="activity-sub">Deposit refunded</div></div><div class="activity-amount muted">₹6,100</div></div>
+        <div class="activity-row"><div class="activity-icon act-ex">⇄</div><div class="activity-text"><div class="activity-title">Exchange accepted: McLaren P1</div><div class="activity-sub">Ship within 72 hrs</div></div><div class="activity-amount teal-text">Trade</div></div>
+        <div class="activity-row"><div class="activity-icon act-win">✅</div><div class="activity-text"><div class="activity-title">Sold: HW Porsche 911 GT3</div><div class="activity-sub">Payout: ₹3,864 (after 8% fee)</div></div><div class="activity-amount">₹3,864</div></div>
+      </div>
+      <div class="activity-list">
+        <div class="activity-header">Watchlist — Ending Soon</div>
+        <div class="activity-row"><div class="activity-icon act-bid">⏱</div><div class="activity-text"><div class="activity-title">HW Deora III Super TH</div><div class="activity-sub" style="color:var(--red);">Ends in 08:30:00</div></div><div class="activity-amount fire-text">₹6,800</div></div>
+        <div class="activity-row"><div class="activity-icon act-bid">⏱</div><div class="activity-text"><div class="activity-title">Tomica Toyota GR86 Red</div><div class="activity-sub">Ends in 1d 5h</div></div><div class="activity-amount fire-text">₹2,800</div></div>
+        <div class="activity-row"><div class="activity-icon act-bid">⏱</div><div class="activity-text"><div class="activity-title">Mini GT McLaren Senna</div><div class="activity-sub">Ends in 2d 3h</div></div><div class="activity-amount fire-text">₹4,100</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ PREMIUM ═══════════════════════════════════════ -->
+<div id="page-premium" class="page">
+  <div class="section pt80">
+    <div class="section-label" style="text-align:center;">Upgrade</div>
+    <div class="section-title" style="text-align:center;font-size:64px;margin-bottom:8px;">Go Premium</div>
+    <div style="text-align:center;font-size:16px;color:var(--text2);margin-bottom:48px;">Unlock the full collector experience</div>
+    <div class="premium-grid">
+      <div class="premium-card">
+        <div class="premium-tier" style="color:var(--chrome2);">BASIC</div>
+        <div class="premium-price">Free<span></span></div>
+        <ul class="premium-features">
+          <li>List up to 3 auctions/month</li>
+          <li>Standard search results</li>
+          <li>Community forum access</li>
+          <li>Show Off posting</li>
+          <li>Basic buyer protection</li>
+        </ul>
+        <button class="btn-outline" style="width:100%;padding:12px;font-size:16px;">Current Plan</button>
+      </div>
+      <div class="premium-card featured">
+        <div class="premium-tier">COLLECTOR</div>
+        <div class="premium-price">₹299<span>/month or ₹2,499/year</span></div>
+        <ul class="premium-features">
+          <li>Unlimited auction listings</li>
+          <li>Priority search placement</li>
+          <li>AI scan priority queue</li>
+          <li>Reduced commission: 6% (vs 8%)</li>
+          <li>Premium seller badge</li>
+          <li>Early access to new features</li>
+          <li>Dedicated support</li>
+        </ul>
+        <button class="btn-fire" style="width:100%;padding:12px;font-size:16px;" onclick="openModal('loginModal')">Subscribe Now</button>
+      </div>
+      <div class="premium-card">
+        <div class="premium-tier" style="color:var(--fire3);">PLATINUM</div>
+        <div class="premium-price">₹799<span>/month</span></div>
+        <ul class="premium-features">
+          <li>Everything in Collector</li>
+          <li>Featured listings on homepage</li>
+          <li>Commission: 4%</li>
+          <li>Dedicated account manager</li>
+          <li>Early access to auctions</li>
+          <li>Trade history analytics</li>
+          <li>Platinum badge + profile</li>
+        </ul>
+        <button class="btn-outline" style="width:100%;padding:12px;font-size:16px;" onclick="openModal('loginModal')">Go Platinum</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ FLOWCHART ═══════════════════════════════════════ -->
+<div id="page-flowchart" class="page">
+  <div class="flowchart-wrap">
+    <div class="section">
+      <div class="section-label">Platform Architecture</div>
+      <div class="section-title" style="margin-bottom:24px;">Customer Journey Flows</div>
+      <div class="flow-nav">
+        <div class="flow-nav-btn active">Buyer Bidding</div>
+        <div class="flow-nav-btn">Seller Listing</div>
+        <div class="flow-nav-btn">Exchange Flow</div>
+        <div class="flow-nav-btn">Dispute Flow</div>
+        <div class="flow-nav-btn">Off-Platform Attempt</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;">
+        <div style="font-family:var(--font-cond);font-size:16px;font-weight:700;color:var(--text2);letter-spacing:1px;margin-bottom:20px;">BUYER BIDDING JOURNEY</div>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <!-- Flow steps -->
+          <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
+            <div style="width:32px;height:32px;background:var(--fire);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">1</div>
+            <div><div style="font-weight:600;font-size:14px;">Browse Auctions</div><div style="font-size:12px;color:var(--text3);">Filter by brand, category, price, AI verified, ending soon</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:var(--border2);margin-left:15px;"></div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
+            <div style="width:32px;height:32px;background:var(--fire);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">2</div>
+            <div><div style="font-weight:600;font-size:14px;">View Auction Detail</div><div style="font-size:12px;color:var(--text3);">See photos, video proof, AI scan badge, bid history, seller rating</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:var(--border2);margin-left:15px;"></div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
+            <div style="width:32px;height:32px;background:var(--fire);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">3</div>
+            <div><div style="font-weight:600;font-size:14px;">Place Bid</div><div style="font-size:12px;color:var(--text3);">Enter bid amount → 10% deposit via Razorpay (if bid > ₹2,000) → Bid confirmed</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:var(--border2);margin-left:15px;"></div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
+            <div style="width:32px;height:32px;background:var(--fire);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">4</div>
+            <div><div style="font-weight:600;font-size:14px;">Auction Ends — Win or Lose</div><div style="font-size:12px;color:var(--text3);">Win → Pay full amount via Razorpay | Lose → Deposit refunded automatically</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:var(--border2);margin-left:15px;"></div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
+            <div style="width:32px;height:32px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">5</div>
+            <div><div style="font-weight:600;font-size:14px;">Escrow Holds Payment</div><div style="font-size:12px;color:var(--text3);">Razorpay escrow locks funds. Seller ships via Shiprocket. Address never shared.</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:var(--border2);margin-left:15px;"></div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
+            <div style="width:32px;height:32px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">6</div>
+            <div><div style="font-weight:600;font-size:14px;">Item Delivered</div><div style="font-size:12px;color:var(--text3);">48-hour inspection window. Buyer confirms OK → funds released to seller.</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:var(--border2);margin-left:15px;"></div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px;background:rgba(255,90,0,0.08);border:1px solid rgba(255,90,0,0.2);border-radius:8px;">
+            <div style="width:32px;height:32px;background:var(--fire);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">7</div>
+            <div><div style="font-weight:600;font-size:14px;">Leave Review</div><div style="font-size:12px;color:var(--text3);">Rate seller 1–5 stars. Review permanently visible on seller profile.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ MODALS ═══════════════════════════════════════ -->
+
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this)closeModal('loginModal')">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('loginModal')">✕</span>
+    <div class="modal-title">Sign In</div>
+    <div class="modal-sub">Enter your mobile number or email</div>
+    <input class="modal-input" type="text" placeholder="Mobile number or email">
+    <div class="modal-actions">
+      <button class="btn-full btn-full-fire" onclick="closeModal('loginModal');openModal('successModal')">Send OTP</button>
+      <button class="btn-full btn-full-outline" onclick="closeModal('loginModal')">Cancel</button>
+    </div>
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--text3);">New here? <span style="color:var(--fire);cursor:pointer;">Create Account →</span></div>
+  </div>
+</div>
+
+<!-- Bid Modal -->
+<div class="modal-overlay" id="bidModal" onclick="if(event.target===this)closeModal('bidModal')">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('bidModal')">✕</span>
+    <div class="modal-title">Confirm Bid</div>
+    <div class="modal-sub">2022 Porsche 911 GT3 — Zamac Super TH</div>
+    <div style="background:var(--bg3);border-radius:8px;padding:16px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:var(--text2);font-size:14px;">Your bid</span><span style="font-family:var(--font-display);font-size:24px;">₹4,500</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="color:var(--text2);font-size:14px;">10% bid deposit</span><span style="color:var(--fire);font-size:14px;font-weight:600;">₹450</span></div>
+      <div style="border-top:1px solid var(--border);padding-top:8px;display:flex;justify-content:space-between;"><span style="color:var(--text2);font-size:14px;">Pay now</span><span style="font-family:var(--font-display);font-size:20px;">₹450</span></div>
+    </div>
+    <div class="modal-notice">
+      🔒 Deposit is refunded automatically if you are outbid. If you win, it adjusts against final payment.
+      <br><br>🚫 By bidding, you agree to complete this transaction on ShowClutch only. Off-platform dealing leads to account suspension.
+    </div>
+    <div class="modal-actions">
+      <button class="btn-full btn-full-fire" onclick="closeModal('bidModal');openModal('successModal')">Pay ₹450 via Razorpay</button>
+      <button class="btn-full btn-full-outline" onclick="closeModal('bidModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Exchange Modal -->
+<div class="modal-overlay" id="exchangeModal" onclick="if(event.target===this)closeModal('exchangeModal')">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('exchangeModal')">✕</span>
+    <div class="modal-title">Propose Exchange</div>
+    <div class="modal-sub">What are you offering in return?</div>
+    <div style="margin-bottom:14px;">
+      <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;">Your item brand</div>
+      <select class="modal-input" style="cursor:pointer;"><option>Select brand...</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option><option>Mini GT</option></select>
+    </div>
+    <input class="modal-input" type="text" placeholder="Your item name / model">
+    <input class="modal-input" type="text" placeholder="Condition (Mint in Card / Loose / etc.)">
+    <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);margin-bottom:16px;">
+      <input type="checkbox" id="cash-topup" style="accent-color:var(--fire);">
+      <label for="cash-topup" style="font-family:var(--font-cond);font-size:14px;font-weight:600;cursor:pointer;">Include cash top-up</label>
+      <input class="modal-input" type="number" placeholder="₹ Amount" style="width:120px;margin:0;">
+    </div>
+    <div class="modal-notice">
+      🔒 If accepted, platform will lock both listings and generate Shiprocket labels for protected simultaneous exchange. Addresses are never shared.
+    </div>
+    <div class="modal-actions">
+      <button class="btn-full btn-full-fire" onclick="closeModal('exchangeModal');openModal('successModal')">Send Proposal</button>
+      <button class="btn-full btn-full-outline" onclick="closeModal('exchangeModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Show Off Modal -->
+<div class="modal-overlay" id="showoffModal" onclick="if(event.target===this)closeModal('showoffModal')">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('showoffModal')">✕</span>
+    <div class="modal-title">Post Your Piece</div>
+    <div class="modal-sub">Share your collection with India's collector community</div>
+    <input class="modal-input" type="text" placeholder="Car name / model">
+    <input class="modal-input" type="text" placeholder="Your story / description">
+    <div style="border:2px dashed var(--border2);border-radius:8px;padding:20px;text-align:center;margin-bottom:14px;cursor:pointer;">
+      <div style="font-size:28px;opacity:0.3;margin-bottom:6px;">📸</div>
+      <div style="font-size:13px;color:var(--text3);">Upload photos (max 8)</div>
+    </div>
+    <div style="background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:14px;">
+      <div style="font-family:var(--font-cond);font-size:13px;font-weight:700;color:var(--text2);margin-bottom:8px;">LISTING TYPE</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;"><input type="radio" name="showoff-type" checked style="accent-color:var(--fire);"> Open to Auction / Exchange offers</label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;"><input type="radio" name="showoff-type" style="accent-color:var(--fire);"> Strictly Show Off Only — not for sale</label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-full btn-full-fire" onclick="closeModal('showoffModal');openModal('successModal')">Post Now</button>
+      <button class="btn-full btn-full-outline" onclick="closeModal('showoffModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal" onclick="if(event.target===this)closeModal('successModal')">
+  <div class="modal" style="text-align:center;">
+    <div class="success-icon">✅</div>
+    <div class="modal-title">Done!</div>
+    <div class="modal-sub" style="margin-bottom:24px;">Your action was completed successfully. All transactions are processed securely within ShowClutch.</div>
+    <button class="btn-full btn-full-fire" style="margin-bottom:0;" onclick="closeModal('successModal')">Back to Marketplace</button>
+  </div>
+</div>
+
+<script>
+// ── Page navigation
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) { page.classList.add('active'); window.scrollTo(0, 0); }
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const navMap = { home:'nav-home', auctions:'nav-auctions', 'auction-detail':'nav-auctions', 'create-auction':'nav-auctions', exchange:'nav-exchange', showoff:'nav-showoff', community:'nav-community', flowchart:'nav-flowchart', dashboard:'', premium:'' };
+  const navId = navMap[id];
+  if (navId) { const el = document.getElementById(navId); if(el) el.classList.add('active'); }
+}
+
+// ── Modal
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── Watch toggle
+function toggleWatch(el) {
+  el.classList.toggle('active');
+  el.textContent = el.classList.contains('active') ? '♥' : '♡';
+}
+
+// ── Like toggle
+function toggleLike(el) {
+  el.classList.toggle('active');
+  const parts = el.textContent.trim().split(' ');
+  const count = parseInt(parts[1]);
+  el.textContent = el.classList.contains('active') ? `♥ ${count + 1} likes` : `♡ ${count} likes`;
+}
+
+// ── Live countdown timers (simulated)
+function tick() {
+  document.querySelectorAll('.timer-val').forEach(el => {
+    if (!el.dataset.seconds) {
+      const parts = el.textContent.split(':');
+      let secs = 0;
+      if (parts.length === 3) secs = parseInt(parts[0])*3600 + parseInt(parts[1])*60 + parseInt(parts[2]);
+      else if (el.textContent.includes('d')) return;
+      el.dataset.seconds = secs;
+    }
+    let s = parseInt(el.dataset.seconds) - 1;
+    if (s < 0) s = 0;
+    el.dataset.seconds = s;
+    const h = Math.floor(s/3600);
+    const m = Math.floor((s%3600)/60);
+    const sec = s%60;
+    el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+    if (s < 3600) el.style.color = 'var(--red)';
+  });
+}
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
