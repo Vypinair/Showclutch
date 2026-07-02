@@ -2,7 +2,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 
 export type WaitlistState = { ok: boolean; message: string };
 
@@ -25,9 +25,13 @@ export async function joinWaitlist(
   }
 
   const entry = { name, email, phone, city, role, brands };
+  const hasSupabase = !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
 
   // Production path: persist to Supabase when configured.
-  if (supabase) {
+  if (hasSupabase) {
+    const supabase = await createClient();
     const { error } = await supabase.from("waitlist_signups").insert(entry);
     if (error) {
       // 23505 = unique_violation — email already signed up. Treat as success.
@@ -40,7 +44,7 @@ export async function joinWaitlist(
     return { ok: true, message: SUCCESS };
   }
 
-  // Dev fallback: no Supabase keys yet — append to a local (gitignored) file.
+  // Dev fallback: no Supabase keys — append to a local (gitignored) file.
   try {
     const file = path.join(process.cwd(), "waitlist-dev.jsonl");
     const line = JSON.stringify({ ...entry, ts: new Date().toISOString() }) + "\n";
