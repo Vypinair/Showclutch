@@ -10,6 +10,10 @@ export async function createListing(formData: FormData) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  // Ensure a profile row exists (accounts created before the signup trigger,
+  // or if the trigger ever misses, still work). seller_id references profiles.id.
+  await supabase.from("profiles").upsert({ id: user.id }, { onConflict: "id", ignoreDuplicates: true });
+
   const model = String(formData.get("model") ?? "").trim();
   if (!model) redirect("/sell?error=" + encodeURIComponent("Car name / model is required."));
 
