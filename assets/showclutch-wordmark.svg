@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1600" height="420" viewBox="0 0 1600 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="orangeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD15A"/>
+      <stop offset="0.22" stop-color="#FFA31A"/>
+      <stop offset="0.62" stop-color="#FF7A00"/>
+      <stop offset="1" stop-color="#C24707"/>
+    </linearGradient>
+    <linearGradient id="edgeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3A4048"/>
+      <stop offset="1" stop-color="#0D0F12"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-20%" width="120%" height="150%">
+      <feDropShadow dx="13" dy="19" stdDeviation="8" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="420" fill="none"/>
+  <g transform="translate(58,42) skewX(-10)" filter="url(#shadow)">
+    <!-- Speed-led underline, still only typographic geometry -->
+    <path d="M0 284 L1510 284 L1460 326 L20 326 Z" fill="#0D0F12" stroke="#3A4048" stroke-width="3"/>
+    <path d="M30 307 L455 307 L424 322 L0 322 Z" fill="#C24707" opacity="0.92"/>
+    <path d="M1180 302 L1478 302 L1458 314 L1160 314 Z" fill="#FF7A00" opacity="0.95"/>
+    <!-- Black/graphite outer stroke for readability on dark and light modes -->
+    <text x="20" y="238" font-family="DejaVu Sans Condensed, Arial, sans-serif" font-size="190" font-weight="900" font-style="oblique" letter-spacing="-10"
+          fill="url(#edgeGrad)" stroke="#111111" stroke-width="44" stroke-linejoin="round">SHOWCLUTCH</text>
+    <text x="20" y="238" font-family="DejaVu Sans Condensed, Arial, sans-serif" font-size="190" font-weight="900" font-style="oblique" letter-spacing="-10"
+          fill="url(#orangeGrad)" stroke="#FF9A16" stroke-width="4" stroke-linejoin="round">SHOWCLUTCH</text>
+    <!-- subtle speed cuts on S and final H, original and not flame-shaped -->
+    <path d="M-28 102 L84 102 L68 119 L-48 119 Z" fill="#FF7A00" opacity="0.9"/>
+    <path d="M-48 154 L65 154 L49 170 L-70 170 Z" fill="#C24707" opacity="0.86"/>
+    <path d="M-24 208 L72 208 L58 222 L-44 222 Z" fill="#FF7A00" opacity="0.78"/>
+    <path d="M1396 95 L1510 58 L1478 105 L1388 128 Z" fill="#FF7A00" opacity="0.85"/>
+  </g>
+  <!-- Palette lockup embedded as metadata comments: primary #FF7A00, highlight #FFA31A, depth #C24707, outline #1B1F23, shadow #3A4048 -->
+</svg>

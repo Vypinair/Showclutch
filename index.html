@@ -654,29 +654,22 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
 <!-- ── NAV ── -->
 <nav>
   <div class="nav-logo" onclick="goPage('home')" style="cursor:pointer;display:flex;align-items:center;">
-    <svg width="210" height="38" viewBox="0 0 210 38" xmlns="http://www.w3.org/2000/svg">
-      <!-- Speed lines — 5 parallel strands, orange centre line brightest -->
-      <line x1="0" y1="8"  x2="210" y2="8"  stroke="rgba(232,85,0,0.18)" stroke-width="1.5"/>
-      <line x1="0" y1="15" x2="210" y2="15" stroke="rgba(232,85,0,0.38)" stroke-width="1.5"/>
-      <line x1="0" y1="22" x2="210" y2="22" stroke="#E85500"              stroke-width="2.5"/>
-      <line x1="0" y1="29" x2="210" y2="29" stroke="rgba(232,85,0,0.38)" stroke-width="1.5"/>
-      <line x1="0" y1="36" x2="210" y2="36" stroke="rgba(232,85,0,0.18)" stroke-width="1.5"/>
-      <!-- SHOW in white, CLUTCH in orange — same Bebas Neue font, sitting on the centre line -->
-      <text x="4" y="30" font-family="'Bebas Neue', sans-serif" font-size="28" letter-spacing="3" fill="#E4E8EF">SHOW</text>
-      <text x="84" y="30" font-family="'Bebas Neue', sans-serif" font-size="28" letter-spacing="3" fill="#E85500">CLUTCH</text>
-    </svg>
+    <img src="assets/showclutch-logo.png" alt="ShowClutch" style="height:34px;width:auto;display:block;">
   </div>
   <div class="nav-links">
     <div class="nav-link" id="nav-home" onclick="goPage('home')">Home</div>
     <div class="nav-link" id="nav-auctions" onclick="goPage('auctions')">Auctions</div>
     <div class="nav-link" id="nav-exchange" onclick="goPage('exchange')">Exchange</div>
+    <div class="nav-link" id="nav-mostwanted" onclick="goPage('mostwanted')">Most Wanted</div>
     <div class="nav-link" id="nav-showoff" onclick="goPage('showoff')">Show Off</div>
     <div class="nav-link" id="nav-community" onclick="goPage('community')">Community</div>
     <div class="nav-link" id="nav-flowchart" onclick="goPage('flowchart')">Flowchart</div>
   </div>
   <div class="nav-right">
     <div class="btn-nav-outline" onclick="goPage('dashboard')">Dashboard</div>
+    <!-- Premium membership disabled for now
     <div class="btn-nav-outline" onclick="goPage('premium')">Premium</div>
+    -->
     <div class="btn-nav-fire" onclick="openModal('loginModal')">Sign In</div>
   </div>
 </nav>
@@ -691,11 +684,13 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
     <div class="hero-content">
       <div class="hero-badge">India's first collector-grade die-cast marketplace</div>
       <div class="hero-title">BID.<br>TRADE.<br><span class="fire-word">SHOW OFF.</span></div>
-      <div class="hero-subtitle">Hot Wheels · Tomica · Matchbox · Mini GT · Greenlight · Majorette</div>
+      <div class="hero-subtitle">Hot Wheels · Tomica · Matchbox · Mini GT · Greenlight · Majorette · Tarmac · Pop Race · Inno64 · Solido · Street Warrior · Stancehunters · TrendHobby</div>
       <div class="hero-ctas">
         <button class="btn-fire" onclick="goPage('auctions')">Browse Auctions</button>
         <button class="btn-outline" onclick="goPage('showoff')">Show Off Collection</button>
         <button class="btn-outline" onclick="goPage('exchange')">Exchange Trades</button>
+        <button class="btn-outline" onclick="goPage('mostwanted')">Most Wanted</button>
+        <button class="btn-outline" onclick="goPage('community')">Community</button>
       </div>
       <div class="hero-stats">
         <div class="hero-stat"><div class="num">1,240<span>+</span></div><div class="lbl">Active Collectors</div></div>
@@ -712,16 +707,22 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
       <div class="brand-item">HOT WHEELS</div><div class="brand-item">TOMICA</div>
       <div class="brand-item">MATCHBOX</div><div class="brand-item">MINI GT</div>
       <div class="brand-item">MAJORETTE</div><div class="brand-item">GREENLIGHT</div>
+      <div class="brand-item">TARMAC</div><div class="brand-item">POP RACE</div>
+      <div class="brand-item">INNO64</div><div class="brand-item">SOLIDO</div>
+      <div class="brand-item">STREET WARRIOR</div><div class="brand-item">STANCEHUNTERS</div>
+      <div class="brand-item">TRENDHOBBY</div>
       <div class="brand-item">AUTOART</div><div class="brand-item">KYOSHO</div>
       <div class="brand-item">MAISTO</div><div class="brand-item">BBURAGO</div>
-      <div class="brand-item">ERTL</div><div class="brand-item">CORGI</div>
       <!-- duplicate for seamless loop -->
       <div class="brand-item">HOT WHEELS</div><div class="brand-item">TOMICA</div>
       <div class="brand-item">MATCHBOX</div><div class="brand-item">MINI GT</div>
       <div class="brand-item">MAJORETTE</div><div class="brand-item">GREENLIGHT</div>
+      <div class="brand-item">TARMAC</div><div class="brand-item">POP RACE</div>
+      <div class="brand-item">INNO64</div><div class="brand-item">SOLIDO</div>
+      <div class="brand-item">STREET WARRIOR</div><div class="brand-item">STANCEHUNTERS</div>
+      <div class="brand-item">TRENDHOBBY</div>
       <div class="brand-item">AUTOART</div><div class="brand-item">KYOSHO</div>
       <div class="brand-item">MAISTO</div><div class="brand-item">BBURAGO</div>
-      <div class="brand-item">ERTL</div><div class="brand-item">CORGI</div>
     </div>
   </div>
 
@@ -766,7 +767,7 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
         <div class="card-img">
           <div class="card-img-bg"></div>
           <div class="card-img-placeholder">🚕</div>
-          <div class="card-badge badge-verified">AI VERIFIED</div>
+          <div class="card-badge badge-verified">PHOTO VERIFIED</div>
           <div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div>
         </div>
         <div class="card-body">
@@ -816,7 +817,7 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
         <div class="card-img">
           <div class="card-img-bg"></div>
           <div class="card-img-placeholder">🚙</div>
-          <div class="card-badge badge-verified">AI VERIFIED</div>
+          <div class="card-badge badge-verified">PHOTO VERIFIED</div>
           <div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div>
         </div>
         <div class="card-body">
@@ -887,9 +888,9 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
           <div style="font-size:13px;color:var(--text3);">100% of payments held by Razorpay until you confirm delivery</div>
         </div>
         <div style="text-align:center;padding:16px;">
-          <div style="font-size:28px;margin-bottom:8px;">🤖</div>
-          <div style="font-family:var(--font-cond);font-size:16px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;">AI Authenticity Check</div>
-          <div style="font-size:13px;color:var(--text3);">AI-assisted scan on every listing. Not a guarantee — a signal.</div>
+          <div style="font-size:28px;margin-bottom:8px;">📷</div>
+          <div style="font-family:var(--font-cond);font-size:16px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;">Box Scan Listing</div>
+          <div style="font-size:13px;color:var(--text3);">Snap the front &amp; back of the box — details auto-fill from the packaging.</div>
         </div>
         <div style="text-align:center;padding:16px;">
           <div style="font-size:28px;margin-bottom:8px;">🚫</div>
@@ -910,15 +911,7 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <svg width="240" height="44" viewBox="0 0 240 44" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0" y1="10" x2="240" y2="10" stroke="rgba(232,85,0,0.18)" stroke-width="1.5"/>
-            <line x1="0" y1="18" x2="240" y2="18" stroke="rgba(232,85,0,0.38)" stroke-width="1.5"/>
-            <line x1="0" y1="26" x2="240" y2="26" stroke="#E85500"              stroke-width="2.5"/>
-            <line x1="0" y1="34" x2="240" y2="34" stroke="rgba(232,85,0,0.38)" stroke-width="1.5"/>
-            <line x1="0" y1="42" x2="240" y2="42" stroke="rgba(232,85,0,0.18)" stroke-width="1.5"/>
-            <text x="4" y="36" font-family="'Bebas Neue', sans-serif" font-size="32" letter-spacing="3" fill="#E4E8EF">SHOW</text>
-            <text x="98" y="36" font-family="'Bebas Neue', sans-serif" font-size="32" letter-spacing="3" fill="#E85500">CLUTCH</text>
-          </svg>
+          <img src="assets/showclutch-logo.png" alt="ShowClutch" style="height:46px;width:auto;display:block;">
         </div>
         <div class="footer-tagline">India's only collector-grade die-cast marketplace.<br>Bid. Trade. Show Off. All in one place.</div>
         <div style="font-size:13px;color:var(--text3);">📍 Bengaluru, India · diecastbazaar.in</div>
@@ -929,7 +922,7 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
           <li onclick="goPage('auctions')">Browse Auctions</li>
           <li onclick="goPage('exchange')">Exchange Board</li>
           <li onclick="goPage('showoff')">Show Off Wall</li>
-          <li>Most Wanted</li>
+          <li onclick="goPage('mostwanted')">Most Wanted</li>
           <li>Trade History</li>
         </ul>
       </div>
@@ -974,7 +967,7 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
     <!-- Filter bar -->
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
       <select style="padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--font-cond);font-size:14px;outline:none;">
-        <option>All Brands</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option><option>Mini GT</option><option>Majorette</option><option>Greenlight</option><option>AutoArt</option>
+        <option>All Brands</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option><option>Mini GT</option><option>Majorette</option><option>Greenlight</option><option>Tarmac</option><option>Pop Race</option><option>Inno64</option><option>Solido</option><option>Street Warrior</option><option>Stancehunters</option><option>TrendHobby</option><option>AutoArt</option>
       </select>
       <select style="padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--font-cond);font-size:14px;outline:none;">
         <option>All Categories</option><option>Treasure Hunt</option><option>Super TH</option><option>Zamac</option><option>Limited Edition</option><option>Vintage/Redline</option>
@@ -983,19 +976,15 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
         <option>Sort: Ending Soon</option><option>Sort: Price Low–High</option><option>Sort: Price High–Low</option><option>Sort: Most Bids</option><option>Sort: Newest Listed</option>
       </select>
       <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;">
-        <input type="checkbox" id="ai-verified" style="accent-color:var(--fire);">
-        <label for="ai-verified" style="font-family:var(--font-cond);font-size:14px;color:var(--text2);cursor:pointer;">AI Verified Only</label>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;">
         <input type="checkbox" id="buy-now-only" style="accent-color:var(--fire);">
         <label for="buy-now-only" style="font-family:var(--font-cond);font-size:14px;color:var(--text2);cursor:pointer;">Buy It Now</label>
       </div>
     </div>
     <div class="card-grid">
       <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚗</div><div class="card-badge badge-live">● LIVE</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div><div style="position:absolute;bottom:10px;left:10px;"><span class="card-badge badge-th">TREASURE HUNT</span></div></div><div class="card-body"><div class="card-brand">Hot Wheels</div><div class="card-name">2022 Porsche 911 GT3 — Zamac Super TH</div><div class="card-series">Treasure Hunt Series · Card #9/10</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>4,200</div><div class="card-bids">↑ 18 bids</div></div><div class="card-timer"><div class="timer-val">02:14:38</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
-      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚕</div><div class="card-badge badge-verified">AI VERIFIED</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Tomica</div><div class="card-name">Toyota GR86 — Limited Edition Red</div><div class="card-series">Tomica Limited Vintage Neo · 2023</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>2,800</div><div class="card-bids">↑ 11 bids</div></div><div class="card-timer"><div class="timer-val">05:42:10</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
+      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚕</div><div class="card-badge badge-verified">PHOTO VERIFIED</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Tomica</div><div class="card-name">Toyota GR86 — Limited Edition Red</div><div class="card-series">Tomica Limited Vintage Neo · 2023</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>2,800</div><div class="card-bids">↑ 11 bids</div></div><div class="card-timer"><div class="timer-val">05:42:10</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
       <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🏎</div><div class="card-badge badge-ending">ENDING SOON</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Mini GT</div><div class="card-name">McLaren P1 — Volcano Orange</div><div class="card-series">Mini GT 1:64 Scale · #097</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>1,650</div><div class="card-bids">↑ 7 bids</div></div><div class="card-timer"><div class="timer-val" style="color:var(--red);">00:22:05</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
-      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚙</div><div class="card-badge badge-verified">AI VERIFIED</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Matchbox</div><div class="card-name">1970 Ford Escort RS1600</div><div class="card-series">Matchbox Moving Parts · Collector Edition</div><div class="card-footer"><div><div class="card-price-label">Buy It Now</div><div class="card-price"><span class="currency">₹</span>3,500</div><div class="card-bids">↑ 4 bids · Reserve met</div></div><div class="card-timer"><div class="timer-val">1d 08:12</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
+      <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🚙</div><div class="card-badge badge-verified">PHOTO VERIFIED</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Matchbox</div><div class="card-name">1970 Ford Escort RS1600</div><div class="card-series">Matchbox Moving Parts · Collector Edition</div><div class="card-footer"><div><div class="card-price-label">Buy It Now</div><div class="card-price"><span class="currency">₹</span>3,500</div><div class="card-bids">↑ 4 bids · Reserve met</div></div><div class="card-timer"><div class="timer-val">1d 08:12</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
       <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">⚡</div></div><div class="card-body"><div class="card-brand">Majorette</div><div class="card-name">Bugatti Chiron — Blue/Black</div><div class="card-series">Majorette Deluxe Cars · Metal Body</div><div class="card-footer"><div><div class="card-price-label">Starting Bid</div><div class="card-price"><span class="currency">₹</span>800</div><div class="card-bids">No bids yet</div></div><div class="card-timer"><div class="timer-val">2d 14:00</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
       <div class="auction-card" onclick="goPage('auction-detail')"><div class="card-img"><div class="card-img-bg"></div><div class="card-img-placeholder">🏆</div><div class="card-badge badge-th">SUPER TH</div><div class="card-watch" onclick="event.stopPropagation();toggleWatch(this)">♡</div></div><div class="card-body"><div class="card-brand">Hot Wheels</div><div class="card-name">Deora III — Super Treasure Hunt</div><div class="card-series">2019 Super TH · Real Rider Wheels</div><div class="card-footer"><div><div class="card-price-label">Current Bid</div><div class="card-price"><span class="currency">₹</span>6,800</div><div class="card-bids">↑ 24 bids</div></div><div class="card-timer"><div class="timer-val">08:30:00</div><div class="timer-lbl">TIME LEFT</div></div></div></div></div>
     </div>
@@ -1029,16 +1018,16 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
             <span class="tag tag-gray">1:64 Scale</span>
             <span class="tag tag-gray">2022 Series</span>
           </div>
-          <!-- AI Scan -->
+          <!-- Box Scan -->
           <div class="ai-scan-card">
             <div class="ai-scan-header">
-              <div class="ai-scan-icon">🤖</div>
-              <div class="ai-scan-title">AI AUTHENTICITY SCAN</div>
-              <div class="ai-scan-badge">VERIFIED ✓</div>
+              <div class="ai-scan-icon">📷</div>
+              <div class="ai-scan-title">BOX SCAN ON FILE</div>
+              <div class="ai-scan-badge">FRONT + BACK ✓</div>
             </div>
             <div class="ai-scan-disclaimer">
-              <strong style="color:var(--teal);">Match: 91% confidence</strong> — Wheel pattern, tampo alignment, card art, and blister seal match reference database for this model/series.<br>
-              ⚠️ <em>This is an AI-assisted check, not a guarantee of authenticity. Platform does not certify items. Bid with your own judgment.</em>
+              <strong style="color:var(--teal);">Front &amp; back of the packaging captured by the seller.</strong> Model, series and card number were auto-read from the box and confirmed by the seller.<br>
+              ⚠️ <em>Photos are seller-provided. The platform does not certify authenticity — inspect the images and bid with your own judgment.</em>
             </div>
           </div>
           <!-- Bid history -->
@@ -1089,6 +1078,9 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
           <div style="font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:1px;color:var(--text2);margin-bottom:8px;">BUY IT NOW</div>
           <div style="font-family:var(--font-display);font-size:32px;margin-bottom:12px;">₹7,500</div>
           <button class="btn-fire" style="width:100%;padding:12px;" onclick="openModal('bidModal')">Buy Now — ₹7,500</button>
+          <div style="margin-top:10px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text3);line-height:1.5;">
+            ⚡ <strong style="color:var(--text2);">2 of 5</strong> Buy It Now purchases used this month. After 5, buy through the <span style="color:var(--fire);">auction flow</span>.
+          </div>
         </div>
         <!-- Seller card -->
         <div class="seller-card">
@@ -1117,19 +1109,43 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
     <div class="section-title" style="margin-bottom:32px;">Create New Auction</div>
     <!-- Steps -->
     <div style="display:flex;gap:0;margin-bottom:32px;border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="flex:1;padding:12px;text-align:center;background:var(--fire);color:#fff;font-family:var(--font-cond);font-size:13px;font-weight:700;">1. PHOTOS</div>
+      <div style="flex:1;padding:12px;text-align:center;background:var(--fire);color:#fff;font-family:var(--font-cond);font-size:13px;font-weight:700;">1. BOX SCAN</div>
       <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">2. DETAILS</div>
       <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">3. PRICING</div>
-      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">4. AI SCAN</div>
-      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">5. SHIPPING</div>
-      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">6. REVIEW</div>
+      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">4. SHIPPING</div>
+      <div style="flex:1;padding:12px;text-align:center;background:var(--surface);color:var(--text3);font-family:var(--font-cond);font-size:13px;font-weight:700;border-left:1px solid var(--border);">5. REVIEW</div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
       <div>
+        <!-- Box Scan (camera) — capture front & back, auto-extract details -->
+        <div style="border:1px solid var(--fire-border);background:var(--fire-subtle);border-radius:12px;padding:18px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:20px;">📷</span>
+            <span style="font-family:var(--font-cond);font-size:16px;font-weight:700;color:var(--fire);letter-spacing:0.5px;">Scan the Box — Front &amp; Back</span>
+          </div>
+          <div style="font-size:12px;color:var(--text3);margin-bottom:14px;line-height:1.5;">Snap the packaging and we'll auto-read the brand, model, series and card number into the form. You can edit anything by hand afterwards.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <label style="border:2px dashed var(--border2);border-radius:10px;padding:20px 12px;text-align:center;cursor:pointer;display:block;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--fire)'" onmouseout="this.style.borderColor='var(--border2)'">
+              <div style="font-size:28px;margin-bottom:6px;opacity:0.5;" id="front-icon">📸</div>
+              <div style="font-family:var(--font-cond);font-size:14px;font-weight:700;">Front of Box</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px;" id="front-status">Tap to capture</div>
+              <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="scanBox('front')">
+            </label>
+            <label style="border:2px dashed var(--border2);border-radius:10px;padding:20px 12px;text-align:center;cursor:pointer;display:block;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--fire)'" onmouseout="this.style.borderColor='var(--border2)'">
+              <div style="font-size:28px;margin-bottom:6px;opacity:0.5;" id="back-icon">📸</div>
+              <div style="font-family:var(--font-cond);font-size:14px;font-weight:700;">Back of Box</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px;" id="back-status">Tap to capture</div>
+              <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="scanBox('back')">
+            </label>
+          </div>
+          <div id="scan-result" style="display:none;margin-top:12px;padding:10px 12px;background:rgba(15,184,160,0.06);border:1px solid rgba(15,184,160,0.25);border-radius:8px;font-size:12px;color:var(--teal);line-height:1.5;">
+            ✓ Text extracted from the box — details auto-filled below. Please review and correct if needed.
+          </div>
+        </div>
         <!-- Upload zone -->
         <div style="border:2px dashed var(--border2);border-radius:12px;padding:40px;text-align:center;margin-bottom:20px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--fire)'" onmouseout="this.style.borderColor='var(--border2)'">
           <div style="font-size:40px;margin-bottom:12px;opacity:0.4;">📸</div>
-          <div style="font-family:var(--font-cond);font-size:18px;font-weight:700;margin-bottom:4px;">Upload Photos</div>
+          <div style="font-family:var(--font-cond);font-size:18px;font-weight:700;margin-bottom:4px;">Upload More Photos</div>
           <div style="font-size:13px;color:var(--text3);">Max 10 MB per photo · Auto-compressed to WebP · Max 8 photos</div>
           <div style="font-size:12px;color:var(--text3);margin-top:6px;">EXIF data (GPS location) stripped automatically</div>
         </div>
@@ -1140,17 +1156,18 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
         </div>
       </div>
       <div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:14px;">Fields auto-fill from your box scan — or fill them in manually below.</div>
         <div style="margin-bottom:16px;">
           <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:500;">Brand *</div>
-          <select class="bid-input" style="cursor:pointer;"><option>Select brand...</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option><option>Mini GT</option><option>Majorette</option><option>Greenlight</option><option>AutoArt</option><option>Kyosho</option><option>Maisto</option><option>Other</option></select>
+          <select class="bid-input" id="ca-brand" style="cursor:pointer;"><option>Select brand...</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option><option>Mini GT</option><option>Majorette</option><option>Greenlight</option><option>Tarmac</option><option>Pop Race</option><option>Inno64</option><option>Solido</option><option>Street Warrior</option><option>Stancehunters</option><option>TrendHobby</option><option>AutoArt</option><option>Kyosho</option><option>Maisto</option><option>Other</option></select>
         </div>
         <div style="margin-bottom:16px;">
           <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:500;">Car Name / Model *</div>
-          <input class="bid-input" type="text" placeholder="e.g. 2022 Porsche 911 GT3">
+          <input class="bid-input" id="ca-name" type="text" placeholder="e.g. 2022 Porsche 911 GT3">
         </div>
         <div style="margin-bottom:16px;">
           <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:500;">Series / Edition</div>
-          <input class="bid-input" type="text" placeholder="e.g. Treasure Hunt Series #9">
+          <input class="bid-input" id="ca-series" type="text" placeholder="e.g. Treasure Hunt Series #9">
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
           <div>
@@ -1177,8 +1194,117 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
           <label for="buy-now-toggle" style="font-family:var(--font-cond);font-size:15px;font-weight:600;cursor:pointer;">Enable Buy It Now</label>
           <input class="bid-input" type="number" placeholder="₹ BIN Price" style="margin-left:auto;width:140px;">
         </div>
-        <button class="btn-fire" style="width:100%;padding:13px;font-size:17px;" onclick="openModal('successModal')">Continue to AI Scan →</button>
+        <button class="btn-fire" style="width:100%;padding:13px;font-size:17px;" onclick="openModal('successModal')">Continue to Pricing →</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ MOST WANTED ═══════════════════════════════════════ -->
+<div id="page-mostwanted" class="page">
+  <div class="section pt80">
+    <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div class="section-label">Hunt Board</div>
+        <div class="section-title">Most Wanted</div>
+      </div>
+      <button class="btn-fire" onclick="openModal('mostWantedModal')">+ Post Most Wanted</button>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:14px;color:var(--text2);line-height:1.6;">
+      🎯 Post the piece you're chasing — <strong style="color:var(--text);">price is secondary</strong>. Collectors who own it respond to your request, make an offer, and you close the deal with escrow-protected Shiprocket shipping. Addresses are never shared.
+    </div>
+
+    <!-- Wanted request grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;">
+
+      <!-- Request 1 -->
+      <div class="exchange-card">
+        <div class="ex-header">
+          <div class="ex-user">
+            <div class="ex-avatar">A</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;">@arjun_collects</div>
+              <div style="font-size:11px;color:var(--text3);">Mumbai · posted 3h ago</div>
+            </div>
+          </div>
+          <div class="ex-status ex-open">● HUNTING</div>
+        </div>
+        <div style="font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--chrome3);text-transform:uppercase;margin-bottom:4px;">Looking For</div>
+        <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:2px;">Datsun 510 — Kaido Racer</div>
+        <div style="font-size:12px;color:var(--fire);font-family:var(--font-cond);font-weight:700;letter-spacing:1px;margin-bottom:10px;">INNO64 · Any card, loose OK</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:12px;">Chasing this for 8 months. Condition flexible — will pay fair collector price, money is not the issue.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="font-size:12px;color:var(--text3);"><span style="color:var(--teal);font-weight:700;">Budget: Open</span> · 3 responses</div>
+          <button class="btn-sm btn-sm-fire" onclick="openModal('respondWantedModal')">I Have This — Respond</button>
+        </div>
+      </div>
+
+      <!-- Request 2 -->
+      <div class="exchange-card">
+        <div class="ex-header">
+          <div class="ex-user">
+            <div class="ex-avatar">P</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;">@priya_diecast</div>
+              <div style="font-size:11px;color:var(--text3);">Bengaluru · posted 1d ago</div>
+            </div>
+          </div>
+          <div class="ex-status ex-open">● HUNTING</div>
+        </div>
+        <div style="font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--chrome3);text-transform:uppercase;margin-bottom:4px;">Looking For</div>
+        <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:2px;">Nissan Skyline GT-R R34 — Bayside Blue</div>
+        <div style="font-size:12px;color:var(--fire);font-family:var(--font-cond);font-weight:700;letter-spacing:1px;margin-bottom:10px;">TARMAC WORKS · Mint in card preferred</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:12px;">Grail piece for my JDM shelf. Happy to overpay for a clean card. Will also consider Pop Race version.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="font-size:12px;color:var(--text3);"><span style="color:var(--teal);font-weight:700;">Budget: Open</span> · 7 responses</div>
+          <button class="btn-sm btn-sm-fire" onclick="openModal('respondWantedModal')">I Have This — Respond</button>
+        </div>
+      </div>
+
+      <!-- Request 3 -->
+      <div class="exchange-card">
+        <div class="ex-header">
+          <div class="ex-user">
+            <div class="ex-avatar">R</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;">@rahul_hw</div>
+              <div style="font-size:11px;color:var(--text3);">Delhi · posted 2d ago</div>
+            </div>
+          </div>
+          <div class="ex-status ex-proposed">● OFFERS IN</div>
+        </div>
+        <div style="font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--chrome3);text-transform:uppercase;margin-bottom:4px;">Looking For</div>
+        <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:2px;">Porsche 911 GT3 RS — Zamac Super TH</div>
+        <div style="font-size:12px;color:var(--fire);font-family:var(--font-cond);font-weight:700;letter-spacing:1px;margin-bottom:10px;">HOT WHEELS · Treasure Hunt only</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:12px;">Completing my 2022 Super TH set. This is the last one I need. Name your price — serious buyer.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="font-size:12px;color:var(--text3);"><span style="color:var(--amber);font-weight:700;">2 offers pending</span> · 11 responses</div>
+          <button class="btn-sm btn-sm-fire" onclick="openModal('respondWantedModal')">I Have This — Respond</button>
+        </div>
+      </div>
+
+      <!-- Request 4 -->
+      <div class="exchange-card">
+        <div class="ex-header">
+          <div class="ex-user">
+            <div class="ex-avatar">S</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;">@sneha_solido</div>
+              <div style="font-size:11px;color:var(--text3);">Pune · posted 4d ago</div>
+            </div>
+          </div>
+          <div class="ex-status ex-open">● HUNTING</div>
+        </div>
+        <div style="font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--chrome3);text-transform:uppercase;margin-bottom:4px;">Looking For</div>
+        <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:2px;">Lancia Delta HF Integrale — Martini</div>
+        <div style="font-size:12px;color:var(--fire);font-family:var(--font-cond);font-weight:700;letter-spacing:1px;margin-bottom:10px;">SOLIDO · 1:43, any condition</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:12px;">Rally legend for my collection. Loose or boxed both fine. Willing to pay premium for Martini livery.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="font-size:12px;color:var(--text3);"><span style="color:var(--teal);font-weight:700;">Budget: Open</span> · 1 response</div>
+          <button class="btn-sm btn-sm-fire" onclick="openModal('respondWantedModal')">I Have This — Respond</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -1501,12 +1627,12 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
           <!-- Flow steps -->
           <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
             <div style="width:32px;height:32px;background:var(--fire);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">1</div>
-            <div><div style="font-weight:600;font-size:14px;">Browse Auctions</div><div style="font-size:12px;color:var(--text3);">Filter by brand, category, price, AI verified, ending soon</div></div>
+            <div><div style="font-weight:600;font-size:14px;">Browse Auctions</div><div style="font-size:12px;color:var(--text3);">Filter by brand, category, price, Buy It Now, ending soon</div></div>
           </div>
           <div style="width:2px;height:16px;background:var(--border2);margin-left:15px;"></div>
           <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
             <div style="width:32px;height:32px;background:var(--fire);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:16px;color:#fff;flex-shrink:0;">2</div>
-            <div><div style="font-weight:600;font-size:14px;">View Auction Detail</div><div style="font-size:12px;color:var(--text3);">See photos, video proof, AI scan badge, bid history, seller rating</div></div>
+            <div><div style="font-weight:600;font-size:14px;">View Auction Detail</div><div style="font-size:12px;color:var(--text3);">See photos, video proof, box-scan photos, bid history, seller rating</div></div>
           </div>
           <div style="width:2px;height:16px;background:var(--border2);margin-left:15px;"></div>
           <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg3);border-radius:8px;margin-bottom:4px;">
@@ -1631,6 +1757,62 @@ hr.dark { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
   </div>
 </div>
 
+<!-- Post Most Wanted Modal -->
+<div class="modal-overlay" id="mostWantedModal" onclick="if(event.target===this)closeModal('mostWantedModal')">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('mostWantedModal')">✕</span>
+    <div class="modal-title">Post Most Wanted</div>
+    <div class="modal-sub">Tell the community what you're hunting — price is secondary</div>
+    <div style="margin-bottom:14px;">
+      <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;">Brand</div>
+      <select class="modal-input" style="cursor:pointer;"><option>Select brand...</option><option>Hot Wheels</option><option>Tomica</option><option>Matchbox</option><option>Mini GT</option><option>Majorette</option><option>Greenlight</option><option>Tarmac</option><option>Pop Race</option><option>Inno64</option><option>Solido</option><option>Street Warrior</option><option>Stancehunters</option><option>TrendHobby</option><option>Any brand</option></select>
+    </div>
+    <input class="modal-input" type="text" placeholder="Car name / model you're looking for">
+    <input class="modal-input" type="text" placeholder="Preferred condition (Mint in card / Loose / Any)">
+    <textarea class="modal-input" rows="3" placeholder="Notes — why you want it, how flexible you are, etc." style="resize:vertical;font-family:var(--font-body);"></textarea>
+    <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);margin-bottom:16px;">
+      <input type="checkbox" id="mw-openbudget" checked style="accent-color:var(--fire);">
+      <label for="mw-openbudget" style="font-family:var(--font-cond);font-size:14px;font-weight:600;cursor:pointer;">Open budget — I'll consider any fair offer</label>
+    </div>
+    <div class="modal-notice">
+      🎯 Owners who have your item will respond with an offer. You choose one, pay into Razorpay escrow, and the seller ships via Shiprocket. Funds release only after you confirm receipt.
+    </div>
+    <div class="modal-actions">
+      <button class="btn-full btn-full-fire" onclick="closeModal('mostWantedModal');openModal('successModal')">Post Request</button>
+      <button class="btn-full btn-full-outline" onclick="closeModal('mostWantedModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Respond to Most Wanted Modal -->
+<div class="modal-overlay" id="respondWantedModal" onclick="if(event.target===this)closeModal('respondWantedModal')">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('respondWantedModal')">✕</span>
+    <div class="modal-title">Respond to Request</div>
+    <div class="modal-sub">You have this piece — make the collector an offer</div>
+    <div style="background:var(--bg3);border-radius:8px;padding:12px 14px;margin-bottom:16px;border:1px solid var(--border);">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">They're hunting</div>
+      <div style="font-size:15px;font-weight:600;">Datsun 510 — Kaido Racer <span style="color:var(--fire);font-size:12px;font-family:var(--font-cond);letter-spacing:1px;">· INNO64</span></div>
+    </div>
+    <input class="modal-input" type="text" placeholder="Your item's condition (Mint in card / Loose / etc.)">
+    <div style="margin-bottom:12px;">
+      <div class="input-label" style="font-size:13px;color:var(--text2);margin-bottom:6px;">Your asking price (₹)</div>
+      <input class="modal-input" type="number" placeholder="₹ Enter your price" style="margin-bottom:0;">
+    </div>
+    <div style="border:2px dashed var(--border2);border-radius:8px;padding:16px;text-align:center;margin-bottom:14px;cursor:pointer;">
+      <div style="font-size:24px;opacity:0.3;margin-bottom:4px;">📷</div>
+      <div style="font-size:12px;color:var(--text3);">Add photos of your piece (front &amp; back of box)</div>
+    </div>
+    <div class="modal-notice">
+      🔒 If the collector accepts your offer, they pay into Razorpay escrow and a Shiprocket label is generated for you. Ship the item — funds release once they confirm receipt. Keep the whole deal on ShowClutch.
+    </div>
+    <div class="modal-actions">
+      <button class="btn-full btn-full-fire" onclick="closeModal('respondWantedModal');openModal('successModal')">Send Offer</button>
+      <button class="btn-full btn-full-outline" onclick="closeModal('respondWantedModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- Success Modal -->
 <div class="modal-overlay" id="successModal" onclick="if(event.target===this)closeModal('successModal')">
   <div class="modal" style="text-align:center;">
@@ -1648,7 +1830,7 @@ function goPage(id) {
   const page = document.getElementById('page-' + id);
   if (page) { page.classList.add('active'); window.scrollTo(0, 0); }
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  const navMap = { home:'nav-home', auctions:'nav-auctions', 'auction-detail':'nav-auctions', 'create-auction':'nav-auctions', exchange:'nav-exchange', showoff:'nav-showoff', community:'nav-community', flowchart:'nav-flowchart', dashboard:'', premium:'' };
+  const navMap = { home:'nav-home', auctions:'nav-auctions', 'auction-detail':'nav-auctions', 'create-auction':'nav-auctions', exchange:'nav-exchange', mostwanted:'nav-mostwanted', showoff:'nav-showoff', community:'nav-community', flowchart:'nav-flowchart', dashboard:'', premium:'' };
   const navId = navMap[id];
   if (navId) { const el = document.getElementById(navId); if(el) el.classList.add('active'); }
 }
@@ -1656,6 +1838,27 @@ function goPage(id) {
 // ── Modal
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── Box Scan (front/back of box) — capture, then auto-fill details.
+// NOTE: this is a prototype demo. Real OCR text-extraction is wired up in the
+// production app; here we simulate the extracted result so the flow is clickable.
+function scanBox(side) {
+  const icon = document.getElementById(side + '-icon');
+  const status = document.getElementById(side + '-status');
+  if (icon) icon.textContent = '✅';
+  if (status) { status.textContent = 'Captured'; status.style.color = 'var(--teal)'; }
+  // Once at least the front is captured, auto-populate the detail fields.
+  if (side === 'front') {
+    const brand = document.getElementById('ca-brand');
+    const name = document.getElementById('ca-name');
+    const series = document.getElementById('ca-series');
+    if (brand) brand.value = 'Hot Wheels';
+    if (name) name.value = '2022 Porsche 911 GT3';
+    if (series) series.value = 'Treasure Hunt Series #9';
+    const res = document.getElementById('scan-result');
+    if (res) res.style.display = 'block';
+  }
+}
 
 // ── Watch toggle
 function toggleWatch(el) {
