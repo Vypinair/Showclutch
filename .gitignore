@@ -1,0 +1,10 @@
+# Portable Git installation (do not commit binaries)
+Git/
+
+# Claude Code local config
+.claude/
+
+# OS / editor cruft
+Thumbs.db
+Desktop.ini
+.DS_Store
