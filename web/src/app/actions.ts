@@ -2,10 +2,12 @@
 
 import { promises as fs } from "fs";
 import path from "path";
+import { supabase } from "@/lib/supabase";
 
 export type WaitlistState = { ok: boolean; message: string };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SUCCESS = "You're on the list — we'll email you before launch.";
 
 export async function joinWaitlist(
   _prev: WaitlistState,
@@ -22,27 +24,30 @@ export async function joinWaitlist(
     return { ok: false, message: "Please enter a valid email address." };
   }
 
-  const entry = {
-    name,
-    email,
-    phone,
-    city,
-    role,
-    brands,
-    ts: new Date().toISOString(),
-  };
+  const entry = { name, email, phone, city, role, brands };
 
-  // TODO(production): insert into Supabase `waitlist_signups` table.
-  // For now (no DB connected yet) we append to a local dev file so signups are
-  // captured during development. This will NOT persist on Vercel — swap to
-  // Supabase before deploying.
+  // Production path: persist to Supabase when configured.
+  if (supabase) {
+    const { error } = await supabase.from("waitlist_signups").insert(entry);
+    if (error) {
+      // 23505 = unique_violation — email already signed up. Treat as success.
+      if (error.code === "23505") {
+        return { ok: true, message: "You're already on the list — see you at launch." };
+      }
+      console.error("supabase insert failed:", error);
+      return { ok: false, message: "Something went wrong. Please try again." };
+    }
+    return { ok: true, message: SUCCESS };
+  }
+
+  // Dev fallback: no Supabase keys yet — append to a local (gitignored) file.
   try {
     const file = path.join(process.cwd(), "waitlist-dev.jsonl");
-    await fs.appendFile(file, JSON.stringify(entry) + "\n", "utf8");
+    const line = JSON.stringify({ ...entry, ts: new Date().toISOString() }) + "\n";
+    await fs.appendFile(file, line, "utf8");
   } catch (err) {
-    console.error("waitlist write failed:", err);
+    console.error("waitlist dev write failed:", err);
   }
-  console.log("waitlist signup:", entry);
-
-  return { ok: true, message: "You're on the list — we'll email you before launch." };
+  console.log("waitlist signup (dev):", entry);
+  return { ok: true, message: SUCCESS };
 }
