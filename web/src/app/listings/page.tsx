@@ -16,6 +16,8 @@ type ListingCard = {
 
 const TYPE_LABEL: Record<string, string> = {
   auction: "Auction",
+  direct: "Direct Buy",
+  offer: "Make Offer",
   bin: "Buy It Now",
   exchange: "Exchange",
   showoff: "Show Off",

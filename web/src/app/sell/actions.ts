@@ -31,6 +31,7 @@ export async function createListing(formData: FormData) {
     scale: String(formData.get("scale") ?? "").trim() || null,
     description: String(formData.get("description") ?? "").trim() || null,
     tags,
+    category: String(formData.get("category") ?? "").trim() || null,
     type: String(formData.get("type") ?? "auction"),
     status: "active",
   };
@@ -64,25 +65,33 @@ export async function createListing(formData: FormData) {
     if (mediaErr) console.error("listing_media insert failed:", mediaErr);
   }
 
-  // Create the auction row for auction / buy-it-now listings.
-  if (payload.type === "auction" || payload.type === "bin") {
-    const binPrice = Number(formData.get("bin_price")) || null;
-    const startBid = Number(formData.get("start_bid")) || 0;
-    const reserve = Number(formData.get("reserve")) || null;
+  // Auction Only -> auction row with bidding, no Buy It Now.
+  // Direct Buy   -> auction row carrying a fixed price (bin_price), no bidding.
+  // Make an Offer -> no auction row; buyers submit price_offers.
+  const now = new Date().toISOString();
+  if (payload.type === "auction") {
     const days = Number(formData.get("duration_days")) || 7;
-    const isAuction = payload.type === "auction";
-    const endAt = new Date(Date.now() + (isAuction ? days : 365) * 86400000).toISOString();
-
     const { error: auctionErr } = await supabase.from("auctions").insert({
       listing_id: data.id,
-      start_at: new Date().toISOString(),
-      end_at: endAt,
-      start_bid: isAuction ? startBid : 0,
-      reserve_price: isAuction ? reserve : null,
-      bin_price: binPrice,
+      start_at: now,
+      end_at: new Date(Date.now() + days * 86400000).toISOString(),
+      start_bid: Number(formData.get("start_bid")) || 0,
+      reserve_price: Number(formData.get("reserve")) || null,
+      bin_price: null,
       status: "live",
     });
     if (auctionErr) console.error("auction insert failed:", auctionErr);
+  } else if (payload.type === "direct") {
+    const { error: auctionErr } = await supabase.from("auctions").insert({
+      listing_id: data.id,
+      start_at: now,
+      end_at: new Date(Date.now() + 365 * 86400000).toISOString(),
+      start_bid: 0,
+      reserve_price: null,
+      bin_price: Number(formData.get("bin_price")) || 0,
+      status: "live",
+    });
+    if (auctionErr) console.error("direct-buy insert failed:", auctionErr);
   }
 
   redirect("/listings/" + data.id);
