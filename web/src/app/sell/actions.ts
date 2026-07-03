@@ -64,5 +64,26 @@ export async function createListing(formData: FormData) {
     if (mediaErr) console.error("listing_media insert failed:", mediaErr);
   }
 
+  // Create the auction row for auction / buy-it-now listings.
+  if (payload.type === "auction" || payload.type === "bin") {
+    const binPrice = Number(formData.get("bin_price")) || null;
+    const startBid = Number(formData.get("start_bid")) || 0;
+    const reserve = Number(formData.get("reserve")) || null;
+    const days = Number(formData.get("duration_days")) || 7;
+    const isAuction = payload.type === "auction";
+    const endAt = new Date(Date.now() + (isAuction ? days : 365) * 86400000).toISOString();
+
+    const { error: auctionErr } = await supabase.from("auctions").insert({
+      listing_id: data.id,
+      start_at: new Date().toISOString(),
+      end_at: endAt,
+      start_bid: isAuction ? startBid : 0,
+      reserve_price: isAuction ? reserve : null,
+      bin_price: binPrice,
+      status: "live",
+    });
+    if (auctionErr) console.error("auction insert failed:", auctionErr);
+  }
+
   redirect("/listings/" + data.id);
 }

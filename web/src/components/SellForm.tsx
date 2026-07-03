@@ -26,6 +26,7 @@ export function SellForm() {
   const [urls, setUrls] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadErr, setUploadErr] = useState("");
+  const [type, setType] = useState("auction");
 
   async function onFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
@@ -67,15 +68,7 @@ export function SellForm() {
             {uploading ? "Uploading…" : "Tap to add photos — front & back of the box"}
           </span>
           <span className="mt-1 text-xs text-ash-3">You can select multiple images</span>
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            multiple
-            className="hidden"
-            onChange={onFiles}
-            disabled={uploading}
-          />
+          <input type="file" accept="image/*" capture="environment" multiple className="hidden" onChange={onFiles} disabled={uploading} />
         </label>
         {uploadErr && <p className="mt-2 text-sm text-red-400">{uploadErr}</p>}
         {urls.length > 0 && (
@@ -94,9 +87,7 @@ export function SellForm() {
         <label className={labelCls}>Brand</label>
         <select name="brand" className={inputCls} defaultValue="">
           <option value="" disabled>Select brand…</option>
-          {BRANDS.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
+          {BRANDS.map((b) => (<option key={b} value={b}>{b}</option>))}
         </select>
       </div>
 
@@ -120,20 +111,13 @@ export function SellForm() {
         <label className={labelCls}>Condition</label>
         <select name="condition" className={inputCls} defaultValue="">
           <option value="" disabled>Select condition…</option>
-          {CONDITIONS.map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
+          {CONDITIONS.map((c) => (<option key={c} value={c}>{c}</option>))}
         </select>
       </div>
 
       <div>
         <label className={labelCls}>Description</label>
-        <textarea
-          name="description"
-          rows={4}
-          className={inputCls + " resize-y"}
-          placeholder="Condition notes, story, anything a buyer should know."
-        />
+        <textarea name="description" rows={4} className={inputCls + " resize-y"} placeholder="Condition notes, story, anything a buyer should know." />
       </div>
 
       <div>
@@ -144,19 +128,53 @@ export function SellForm() {
       <div>
         <label className={labelCls}>Listing type</label>
         <div className="flex flex-wrap gap-2">
-          {TYPES.map(([val, label], i) => (
+          {TYPES.map(([val, label]) => (
             <label key={val} className="cursor-pointer">
-              <input type="radio" name="type" value={val} defaultChecked={i === 0} className="peer sr-only" />
+              <input type="radio" name="type" value={val} checked={type === val} onChange={() => setType(val)} className="peer sr-only" />
               <span className="inline-block rounded-lg border border-line px-4 py-2 text-sm text-ash-2 transition-colors peer-checked:border-fire peer-checked:bg-fire/10 peer-checked:text-fire">
                 {label}
               </span>
             </label>
           ))}
         </div>
-        <p className="mt-2 text-xs text-ash-3">
-          Pricing and bidding are set up once the Auctions engine is live.
-        </p>
       </div>
+
+      {type === "auction" && (
+        <div className="space-y-5 rounded-xl border border-line bg-ink-2/40 p-5">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label className={labelCls}>Starting bid (₹) *</label>
+              <input className={inputCls} name="start_bid" type="number" min="1" step="1" required={type === "auction"} placeholder="e.g. 500" />
+            </div>
+            <div>
+              <label className={labelCls}>Reserve price (₹, optional)</label>
+              <input className={inputCls} name="reserve" type="number" min="0" step="1" placeholder="Hidden minimum" />
+            </div>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label className={labelCls}>Duration</label>
+              <select name="duration_days" className={inputCls} defaultValue="7">
+                <option value="1">1 day</option>
+                <option value="3">3 days</option>
+                <option value="5">5 days</option>
+                <option value="7">7 days</option>
+              </select>
+            </div>
+            <div>
+              <label className={labelCls}>Buy It Now (₹, optional)</label>
+              <input className={inputCls} name="bin_price" type="number" min="0" step="1" placeholder="Instant purchase price" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {type === "bin" && (
+        <div className="rounded-xl border border-line bg-ink-2/40 p-5">
+          <label className={labelCls}>Buy It Now price (₹) *</label>
+          <input className={inputCls} name="bin_price" type="number" min="1" step="1" required={type === "bin"} placeholder="e.g. 2500" />
+        </div>
+      )}
 
       <button
         type="submit"
