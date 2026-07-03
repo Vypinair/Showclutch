@@ -2,8 +2,10 @@
 
 > India's collector-grade die-cast marketplace. **Bid. Trade. Show Off.**
 >
-> Status: **Draft v0.1** · Owner: Vypin · Last updated: 2026-07-02
+> Status: **Draft v0.2** · Owner: Vypin · Last updated: 2026-07-03
 > Repo: https://github.com/Vypinair/Showclutch
+>
+> v0.2 adds the sale-format model, auction rules, and category/series taxonomy — see §14–§16.
 
 ---
 
@@ -12,7 +14,7 @@
 ShowClutch is a marketplace and community for die-cast car collectors in India
 (Hot Wheels, Tomica, Mini GT, Tarmac, Inno64, Solido, and more). It combines:
 
-- **Auctions** — timed bidding on collector pieces, with a limited Buy-It-Now.
+- **Marketplace** — three sale formats: Auction Only, Direct Buy, Make an Offer (see §14).
 - **Exchange** — direct collector-to-collector trades (item-for-item + cash top-up).
 - **Most Wanted** — buyers post what they're hunting; owners respond with offers.
 - **Show Off** — a social wall to display collections.
@@ -255,3 +257,98 @@ accept → both listings lock → simultaneous protected shipment.
 - **Prototype:** `index.html` (single-file, self-contained) — the visual reference.
 - **Brand assets:** `assets/` (logo PNG + wordmark SVG).
 - This spec is a living document; update it as decisions are made.
+
+---
+
+## 14. Sale formats (collector-first)
+
+Every marketplace listing has exactly **one primary sale format**. Keeping formats
+distinct protects ShowClutch's identity as a collector-first auction platform — the
+winner of a rare piece is whoever values it most, not whoever clicks fastest.
+
+| Format | Best for | Buy It Now? | Mechanic |
+|---|---|---|---|
+| **Auction Only** | Rare, limited, chase, STH, RLC, vintage, high-demand | **No** | Timed bidding; starting bid + optional reserve |
+| **Direct Buy** | Mainlines, accessories, common imports, bulk stock | Yes (that *is* the format) | Fixed price, instant purchase |
+| **Make an Offer** | Price-uncertain collectibles | — | Buyers submit offers; seller accepts or counters |
+
+Industry precedent: Whatnot treats auctions and Buy It Now as distinct formats; eBay
+allows a hybrid but generally removes Buy It Now after the first bid. We keep them separate.
+
+### 14.1 Format rules (MVP)
+1. Seller must choose one primary format: Auction Only, Direct Buy, or Make an Offer.
+2. **Buy It Now must not appear on Auction Only listings** during MVP.
+3. Auction listings may use: starting bid, reserve price, proxy bidding, bid
+   increments, anti-sniping extension, bid-deposit rules.
+4. If an auction ends **without the reserve being met**, the seller may:
+   relist the auction · revise the reserve · convert to Direct Buy · enable Make an Offer.
+   Example: start ₹1,000, reserve ₹4,500, auction ends at ₹4,200 → item does not sell;
+   seller keeps it or converts it to a Direct Buy later. This protects the seller
+   without killing the auction opportunity for everyone else.
+5. Rare / limited / chase / high-value categories **default to Auction Only** and
+   require admin approval before any format change.
+6. Sellers **cannot cancel or convert an auction once valid bids exist**, except via
+   admin-approved exceptional cases.
+7. When a reserve-not-met auction is converted, **everyone who watched gets notified**:
+   "now available for direct purchase" / "seller has opened offers" / "relisted with revised reserve".
+
+### 14.2 Auction integrity rules
+- No Buy It Now for rare / single-unit collector pieces.
+- Verified account required to bid.
+- Bid deposit for high-value lots.
+- Proxy bids, so users don't have to sit online all day.
+- **Anti-sniping extension:** a bid in the final minute extends the auction by 1–2 minutes
+  (eBay uses extended bidding in some categories for the same fairness reason).
+- No contact numbers, UPI IDs, or off-platform deals.
+- No auction cancellation after bids unless admin-approved.
+- One unit per buyer for limited importer drops.
+- Watchlist alerts before an auction starts and before it ends.
+- Admin review for high-value listings.
+
+### 14.3 Implementation status (2026-07-03)
+- **Built:** three formats; Auction Only bidding (starting bid, reserve, live countdown,
+  bid history) via `place_bid()`; Direct Buy via `buy_now()` (no monthly cap); Make an
+  Offer submit + seller-accept via `accept_offer()`; rare-category auto-default to Auction Only.
+- **Deferred (build progressively):** proxy bidding, anti-sniping extension, bid deposits,
+  verified-account-to-bid, one-unit-per-buyer, reserve-not-met conversion flow +
+  watcher notifications, admin review/approval, watchlist alerts, no-cancel-after-bids,
+  counter-offers.
+
+---
+
+## 15. Collector categories
+
+Every listing carries one **category**. Rare categories default to Auction Only.
+
+`Standard Release` · `Premium / Collector Line` · `Limited Edition` · `Chase Variant` ·
+`Regional Exclusive` · `Retailer / Distributor Exclusive` · `Event / Convention Exclusive` ·
+`Collaboration Release` · `Membership / Club Exclusive` · `Vintage / Discontinued` ·
+`Prototype / Pre-production` · `Error / Variation`
+
+**Rare (auto Auction Only):** Limited Edition, Chase Variant, Regional Exclusive,
+Retailer/Distributor Exclusive, Event/Convention Exclusive, Membership/Club Exclusive,
+Vintage/Discontinued, Prototype/Pre-production, Error/Variation.
+
+---
+
+## 16. Series / Edition taxonomy (per brand)
+
+The **Series / Edition** field auto-populates from the selected brand. Scales
+(`1:64, 1:43, 1:32, 1:24, 1:18, 1:12, 1:87`) are selectable; Solido defaults to 1:18.
+Source of truth: `web/src/lib/taxonomy.ts`.
+
+- **Hot Wheels:** Mainline, Treasure Hunt, Super Treasure Hunt, Red Line Club (RLC), Car Culture, Team Transport, Boulevard, Premium, Fast & Furious, Pop Culture, Error/Variation, Discontinued.
+- **Tomica:** Regular, Premium, Premium Unlimited, Limited Vintage, Limited Vintage Neo, Event Model, Gift Set, Disney Tomica, Discontinued.
+- **Matchbox:** Mainline, Moving Parts, Collectors, Super Chase, Moving Parts Super Chase, Anniversary/Special Edition, Mattel Creations/Collector Release, Licensed Theme/Entertainment, Vintage Matchbox, Error/Variation, Discontinued.
+- **Mini GT:** Standard Release, Kaido House x Mini GT, Limited Edition, Regional Exclusive, Event Exclusive, Distributor/Retailer Exclusive, Kaido House Chase Variant, Collaboration Release, Motorsport/Licensed Series, Discontinued.
+- **Greenlight:** Standard Release, Hollywood Series, Hobby Exclusive, Club Vee-Dub, Running on Empty, Muscle Series, Green Machine Chase, Limited Edition, Discontinued.
+- **Majorette:** Standard Series, Showroom Premium, Showroom Deluxe, JDM Legends Premium, JDM Legends Deluxe, Japan Series Deluxe, Limited Edition, Gift Pack Exclusive, Event/Motor Show Release, Vintage Majorette, Discontinued.
+- **Tarmac Works:** GLOBAL64, HOBBY64, Special Edition, Chase Variant, Regional Exclusive, Retailer/Distributor Exclusive, Event/Promo Exclusive, Tarmac Owners Club Exclusive, Collaboration Release, Limited Production Run, Discontinued.
+- **Pop Race:** Standard Release, Pop Race Limited, Enigma Exclusive, Enigma Chase, Event Exclusive, Regional Exclusive, Chase Variant, Chrome/Carbon/Special Finish, Opening Parts Collector Release, Collaboration/Licensed Livery, Discontinued.
+- **Inno64:** Standard Release, Limited Edition, Numbered Limited Edition, Chase Variant, Chrome Chase, Event/Expo Exclusive, Regional Exclusive, Collaboration Release, Liberty Walk/RWB/Pandem/Top Secret Series, Motorsport/Drift Livery, Discontinued.
+- **Solido:** 1:18 Collection, 1:43 Collection, Street Car, Motorsport/Endurance, Movie Car/Entertainment Licence, Limited Edition, Anniversary Edition, Club Solido Exclusive, Vintage Solido, Discontinued, Special Livery, Dealer/Event Exclusive.
+- **Street Weapon / Street Warrior:** Street Weapon Standard, Street Warrior Standard, Numbered Limited Edition, Special Colourway, Chrome/Gradient/Special Finish, Collaboration Release, Event Exclusive, Regional Exclusive, RWB/Custom Body Kit Series, Discontinued.
+- **Stance Hunters:** Standard Release, Numbered Limited Edition, Special Colourway, Collaboration Release, Event Exclusive, Trailer/Diorama Set, Regional Exclusive, Discontinued.
+- **Trends Hobby (TrendHobby):** Standard Release, Numbered Limited Edition, Special Colourway, Event Exclusive, Regional Exclusive, Retailer Exclusive, Collaboration Release, Discontinued.
+
+Brands without a specific list (AutoArt, Kyosho, Maisto, Other) fall back to the 12 categories.
