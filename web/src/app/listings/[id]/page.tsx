@@ -15,6 +15,7 @@ type Listing = {
   type: string;
   created_at: string;
   seller: { username: string | null; city: string | null } | null;
+  listing_media: { url: string; position: number }[] | null;
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -34,13 +35,14 @@ export default async function ListingDetailPage({
   const { data } = await supabase
     .from("listings")
     .select(
-      "id, brand, model, series, condition, scale, description, tags, type, created_at, seller:profiles(username, city)",
+      "id, brand, model, series, condition, scale, description, tags, type, created_at, seller:profiles(username, city), listing_media(url, position)",
     )
     .eq("id", id)
     .single();
 
   if (!data) notFound();
   const listing = data as unknown as Listing;
+  const photos = [...(listing.listing_media ?? [])].sort((a, b) => a.position - b.position);
 
   return (
     <div className="mx-auto max-w-3xl px-6">
@@ -50,7 +52,21 @@ export default async function ListingDetailPage({
           ← Back to listings
         </Link>
 
-        <div className="mt-4 flex items-center gap-3">
+        {photos.length > 0 && (
+          <div className="mt-4 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))" }}>
+            {photos.map((p) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={p.url}
+                src={p.url}
+                alt=""
+                className="aspect-square w-full rounded-xl border border-line object-cover"
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="mt-6 flex items-center gap-3">
           <span className="text-xs uppercase tracking-widest text-ash-3">{listing.brand ?? "—"}</span>
           <span className="rounded-md bg-fire/10 px-2 py-0.5 text-xs text-fire">
             {TYPE_LABEL[listing.type] ?? listing.type}

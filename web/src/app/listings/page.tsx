@@ -11,6 +11,7 @@ type ListingCard = {
   type: string;
   created_at: string;
   seller: { username: string | null; city: string | null } | null;
+  listing_media: { url: string; position: number }[] | null;
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -20,11 +21,18 @@ const TYPE_LABEL: Record<string, string> = {
   showoff: "Show Off",
 };
 
+function firstPhoto(l: ListingCard): string | null {
+  const media = [...(l.listing_media ?? [])].sort((a, b) => a.position - b.position);
+  return media[0]?.url ?? null;
+}
+
 export default async function ListingsPage() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("listings")
-    .select("id, brand, model, series, condition, type, created_at, seller:profiles(username, city)")
+    .select(
+      "id, brand, model, series, condition, type, created_at, seller:profiles(username, city), listing_media(url, position)",
+    )
     .eq("status", "active")
     .order("created_at", { ascending: false })
     .limit(60);
@@ -57,26 +65,39 @@ export default async function ListingsPage() {
           </div>
         ) : (
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {listings.map((l) => (
-              <Link
-                key={l.id}
-                href={"/listings/" + l.id}
-                className="rounded-xl border border-line bg-surface/40 p-5 transition-colors hover:border-fire/30"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-widest text-ash-3">{l.brand ?? "—"}</span>
-                  <span className="rounded-md bg-fire/10 px-2 py-0.5 text-xs text-fire">
-                    {TYPE_LABEL[l.type] ?? l.type}
-                  </span>
-                </div>
-                <div className="mt-2 font-medium text-ash">{l.model ?? "Untitled"}</div>
-                <div className="mt-0.5 text-sm text-ash-2">{l.series ?? ""}</div>
-                <div className="mt-4 flex items-center justify-between text-xs text-ash-3">
-                  <span>{l.condition ?? ""}</span>
-                  <span>@{l.seller?.username ?? "seller"}</span>
-                </div>
-              </Link>
-            ))}
+            {listings.map((l) => {
+              const photo = firstPhoto(l);
+              return (
+                <Link
+                  key={l.id}
+                  href={"/listings/" + l.id}
+                  className="overflow-hidden rounded-xl border border-line bg-surface/40 transition-colors hover:border-fire/30"
+                >
+                  <div className="flex aspect-[4/3] items-center justify-center bg-ink-3">
+                    {photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={photo} alt={l.model ?? ""} className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-4xl opacity-20">🚗</span>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs uppercase tracking-widest text-ash-3">{l.brand ?? "—"}</span>
+                      <span className="rounded-md bg-fire/10 px-2 py-0.5 text-xs text-fire">
+                        {TYPE_LABEL[l.type] ?? l.type}
+                      </span>
+                    </div>
+                    <div className="mt-2 font-medium text-ash">{l.model ?? "Untitled"}</div>
+                    <div className="mt-0.5 text-sm text-ash-2">{l.series ?? ""}</div>
+                    <div className="mt-4 flex items-center justify-between text-xs text-ash-3">
+                      <span>{l.condition ?? ""}</span>
+                      <span>@{l.seller?.username ?? "seller"}</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </main>

@@ -46,5 +46,23 @@ export async function createListing(formData: FormData) {
     redirect("/sell?error=" + encodeURIComponent("Could not create the listing. Please try again."));
   }
 
+  // Attach uploaded photos (already stored client-side) as listing_media rows.
+  let media: string[] = [];
+  try {
+    media = JSON.parse(String(formData.get("media") ?? "[]"));
+  } catch {
+    media = [];
+  }
+  if (Array.isArray(media) && media.length > 0) {
+    const rows = media.slice(0, 8).map((url, i) => ({
+      listing_id: data.id,
+      url,
+      kind: "image",
+      position: i,
+    }));
+    const { error: mediaErr } = await supabase.from("listing_media").insert(rows);
+    if (mediaErr) console.error("listing_media insert failed:", mediaErr);
+  }
+
   redirect("/listings/" + data.id);
 }
